@@ -19,8 +19,7 @@ public class TableRepository {
         Statement statement = connection.createStatement();
         statement.execute("CREATE TABLE IF NOT EXISTS `store`.`goods` (\n" +
                 "  `id` INT NOT NULL AUTO_INCREMENT,\n" +
-                "  `name` VARCHAR(45) NOT NULL,\n" +
-                "  `picture` BLOB NOT NULL,\n" +
+                "  `goodsname` VARCHAR(45) NOT NULL,\n" +
                 "  `category` VARCHAR(50) NOT NULL,\n" +
                 "  `subcategory` VARCHAR(50) NOT NULL,\n" +
                 "  `cost` INT NULL,\n" +

@@ -9,5 +9,6 @@ public class Store {
         TableRepository tableRepository = new TableRepository();
         tableRepository.customerTable();
         tableRepository.goodsTable();
+        tableRepository.customerBuyGoods();
     }
 }
