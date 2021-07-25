@@ -113,6 +113,7 @@ public class CustomerService {
                         changeUsername();
                         break;
                     case 7:
+                        viewProducts();
                         break;
                     case 8:
                         backToMainMenu = true;
@@ -177,6 +178,7 @@ public class CustomerService {
                     changeUsername();
                     break;
                 case 7:
+                    viewProducts();
                     break;
                 case 8:
                     backToMainMenu = true;
@@ -395,5 +397,10 @@ public class CustomerService {
         }else{
             System.out.println("you username didn't change");
         }
+    }
+    private static void viewProducts() throws SQLException {
+        ProductRepository productRepository = new ProductRepository();
+        System.out.println("------ view products ------");
+        productRepository.findProducts();
     }
 }

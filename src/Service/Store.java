@@ -1,6 +1,7 @@
 package Service;
 
 import repository.CustomerRepository;
+import repository.ProductRepository;
 
 import java.sql.SQLException;
 import java.util.InputMismatchException;
@@ -46,7 +47,8 @@ public class Store {
                     customerService.signUp();
                     break;
                 case 3:
-                    System.out.println("you see goods");
+                    ProductRepository productRepository = new ProductRepository();
+                    productRepository.findProducts();
                     break;
                 case 4:
                     System.out.println("hope to see you soon");

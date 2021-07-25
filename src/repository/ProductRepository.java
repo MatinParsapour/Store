@@ -28,6 +28,7 @@ public class ProductRepository {
         Statement statement = connection.createStatement();
         ResultSet resultSet = statement.executeQuery("SELECT * FROM goods");
         while(resultSet.next()){
+            System.out.println("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
             System.out.println("id : " + resultSet.getInt("id"));
             System.out.println("name : " + resultSet.getString("goodsname"));
             System.out.println("category : " + resultSet.getString("category"));
