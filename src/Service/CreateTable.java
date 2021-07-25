@@ -28,10 +28,10 @@ public class CreateTable {
     public void customerBuyGoods()throws SQLException{
         Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/website", "root", "Mm1234!@#$");
         Statement statement = connection.createStatement();
-        statement.execute("CREATE TABLE IF NOT EXISTS`store`.`customerbuygoods` (\n" +
+        statement.execute("CREATE TABLE IF NOT EXISTS `store`.`customerbuygoods` (\n" +
                 "  `customerid` INT NOT NULL,\n" +
                 "  `goodsid` INT NOT NULL,\n" +
-                "  PRIMARY KEY (`customerid`, `goodsid`),\n" +
+                "  PRIMARY KEY (`customerid`),\n" +
                 "  INDEX `id_goods_idx` (`goodsid` ASC) VISIBLE,\n" +
                 "  CONSTRAINT `id_customer`\n" +
                 "    FOREIGN KEY (`customerid`)\n" +
