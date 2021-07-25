@@ -36,4 +36,14 @@ public class CustomerRepository {
         insertCustomer.executeUpdate();
         System.out.println("you successfully signed up");
     }
+    public int findUserId() throws SQLException {
+        int userId = 0;
+        Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/store", "root", "Mm1234!@#$");
+        Statement statement = connection.createStatement();
+        ResultSet resultSet = statement.executeQuery("SELECT id FROM customer WHERE username = '" + Customer.getUsername() + "'");
+        while(resultSet.next()){
+            userId = resultSet.getInt("id");
+        }
+        return userId;
+    }
 }
