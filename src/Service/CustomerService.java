@@ -2,6 +2,7 @@ package Service;
 
 import entity.Customer;
 import repository.CustomerRepository;
+import repository.ProductRepository;
 
 import java.sql.SQLException;
 import java.util.InputMismatchException;
@@ -94,9 +95,10 @@ public class CustomerService {
                 }
                 switch (logInChoice){
                     case 1:
-                        CustomerService.chargeAccount();
+                        chargeAccount();
                         break;
                     case 2:
+                        seeYourCart();
                         break;
                     case 3:
                         break;
@@ -153,9 +155,10 @@ public class CustomerService {
             }
             switch (logInChoice){
                 case 1:
-                    CustomerService.chargeAccount();
+                    chargeAccount();
                     break;
                 case 2:
+                    seeYourCart();
                     break;
                 case 3:
                     break;
@@ -234,5 +237,11 @@ public class CustomerService {
         int currentBalance = customerRepository.findCurrentBalance(userId);
         int nextBalance = amount + currentBalance;
         customerRepository.updateUserBalance(nextBalance,userId);
+    }
+    private static void seeYourCart() throws SQLException {
+        ProductRepository productRepository = new ProductRepository();
+        CustomerRepository customerRepository = new CustomerRepository();
+        int userId = customerRepository.findUserId();
+        productRepository.findProductId(userId);
     }
 }
