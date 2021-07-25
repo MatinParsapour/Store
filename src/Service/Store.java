@@ -43,7 +43,7 @@ public class Store {
                     customerService.logIn();
                     break;
                 case 2:
-                    System.out.println("you signed up");
+                    customerService.signUp();
                     break;
                 case 3:
                     System.out.println("you see goods");

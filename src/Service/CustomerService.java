@@ -1,10 +1,13 @@
 package Service;
 
+import entity.Customer;
 import repository.CustomerRepository;
 
 import java.sql.SQLException;
 import java.util.InputMismatchException;
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class CustomerService {
     static Scanner input = new Scanner(System.in);
@@ -22,8 +25,8 @@ public class CustomerService {
                         System.out.println("---------- user name -----------");
                         String username = new Scanner(System.in).next();
                         System.out.println("----------- password -----------");
-                        int password = new Scanner(System.in).nextInt();
-                        logIn = customerRepository.checkUsernameAndPassword(username,String.valueOf(password));
+                        String password = new Scanner(System.in).next();
+                        logIn = customerRepository.checkUsernameAndPassword(username,password);
                         if(logIn){
                             break;
                         }
@@ -65,6 +68,65 @@ public class CustomerService {
                 backToMainMenu = true;
             }
         }
-
+    }
+    public void signUp() throws SQLException {
+        CustomerRepository customerRepository = new CustomerRepository();
+        System.out.println("<><><><><><> sign up <><><><><><>");
+        Customer.setName(CustomerService.name());
+        Customer.setUsername(CustomerService.username());
+        Customer.setPassword(CustomerService.password());
+        customerRepository.insertCustomer();
+    }
+    private static String name(){
+        String name = null;
+        boolean itMatches = false;
+        System.out.println("------ your name ------");
+        while(!itMatches){
+            try{
+                name = input.next();
+                itMatches = true;
+            }catch (InputMismatchException exception){
+                System.out.println("you should write your name by characters");
+                System.out.print("try again");
+            }
+        }
+        return name;
+    }
+    private static String username() throws SQLException {
+        CustomerRepository customerRepository = new CustomerRepository();
+        String username = null;
+        boolean itMatches = false;
+        System.out.println("------ username ------");
+        while(!itMatches){
+            try{
+                username = input.next();
+                boolean usernameIsOk = customerRepository.checkUsername(username);
+                while(usernameIsOk){
+                    System.out.println("-------- change your username ---------");
+                    System.out.println("---- there is a username like this ----");
+                    username = input.next();
+                    usernameIsOk = customerRepository.checkUsername(username);
+                }
+                itMatches = true;
+            }catch (InputMismatchException exception){
+                System.out.println("you should write your name by characters");
+                System.out.print("try again: ");
+            }
+        }
+        return username;
+    }
+    private static String password(){
+        String validPassword = "[0-9]{10}";
+        Pattern pattern = Pattern.compile(validPassword);
+        System.out.println("------ password ------");
+        String password = input.next();
+        Matcher matcher = pattern.matcher(password);
+        while(!matcher.matches()){
+            System.out.println("you should write a 10-digit password");
+            System.out.print("try again: ");
+            password = input.next();
+            matcher = pattern.matcher(password);
+        }
+        return password;
     }
 }
