@@ -109,4 +109,14 @@ public class ProductRepository {
         increaseInventory.setInt(2,Goods.getGoodsId());
         increaseInventory.executeUpdate();
     }
+    public int checkInventory(int productId) throws SQLException {
+        int inventory = 0;
+        Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/store", "root", "Mm1234!@#$");
+        Statement statement = connection.createStatement();
+        ResultSet resultSet = statement.executeQuery("SELECT * FROM goods WHERE id  = '" + productId + "'");
+        while(resultSet.next()){
+            inventory = resultSet.getInt("number");
+        }
+        return inventory;
+    }
 }

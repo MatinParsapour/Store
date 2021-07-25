@@ -297,8 +297,14 @@ public class CustomerService {
                     if(choice == 1){
                         System.out.print("product id: ");
                         int productId = input.nextInt();
-                        productRepository.addToCart(productId);
-                        inputIsCorrect = true;
+                        int inventory = productRepository.checkInventory(productId);
+                        if(inventory > 0){
+                            productRepository.addToCart(productId);
+                            inputIsCorrect = true;
+                        }
+                        else{
+                            System.out.println("sorry we are out of this product");
+                        }
                     }else{
                         inputIsCorrect = true;
                         backToMainMenu = true;
