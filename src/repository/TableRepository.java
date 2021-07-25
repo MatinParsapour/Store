@@ -26,4 +26,23 @@ public class TableRepository {
                 "  `cost` INT NULL,\n" +
                 "  PRIMARY KEY (`id`));\n");
     }
+    public void customerBuyGoods()throws SQLException{
+        Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/website", "root", "Mm1234!@#$");
+        Statement statement = connection.createStatement();
+        statement.execute("CREATE TABLE IF NOT EXISTS`store`.`customerbuygoods` (\n" +
+                "  `customerid` INT NOT NULL,\n" +
+                "  `goodsid` INT NOT NULL,\n" +
+                "  PRIMARY KEY (`customerid`, `goodsid`),\n" +
+                "  INDEX `id_goods_idx` (`goodsid` ASC) VISIBLE,\n" +
+                "  CONSTRAINT `id_customer`\n" +
+                "    FOREIGN KEY (`customerid`)\n" +
+                "    REFERENCES `store`.`customer` (`id`)\n" +
+                "    ON DELETE NO ACTION\n" +
+                "    ON UPDATE NO ACTION,\n" +
+                "  CONSTRAINT `id_goods`\n" +
+                "    FOREIGN KEY (`goodsid`)\n" +
+                "    REFERENCES `store`.`goods` (`id`)\n" +
+                "    ON DELETE NO ACTION\n" +
+                "    ON UPDATE NO ACTION);\n");
+    }
 }
