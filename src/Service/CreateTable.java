@@ -31,7 +31,6 @@ public class CreateTable {
         statement.execute("CREATE TABLE IF NOT EXISTS `store`.`customerbuygoods` (\n" +
                 "  `customerid` INT NOT NULL,\n" +
                 "  `goodsid` INT NOT NULL,\n" +
-                "  PRIMARY KEY (`customerid`),\n" +
                 "  INDEX `id_goods_idx` (`goodsid` ASC) VISIBLE,\n" +
                 "  CONSTRAINT `id_customer`\n" +
                 "    FOREIGN KEY (`customerid`)\n" +

@@ -23,4 +23,38 @@ public class ProductRepository {
             System.out.println("cost : " + resultSet.getInt("cost"));
         }
     }
+    public void findProducts() throws SQLException {
+        Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/store", "root", "Mm1234!@#$");
+        Statement statement = connection.createStatement();
+        ResultSet resultSet = statement.executeQuery("SELECT * FROM goods");
+        while(resultSet.next()){
+            System.out.println("id : " + resultSet.getInt("id"));
+            System.out.println("name : " + resultSet.getString("goodsname"));
+            System.out.println("category : " + resultSet.getString("category"));
+            System.out.println("subcategory : " + resultSet.getString("subcategory"));
+            System.out.println("cost : " + resultSet.getInt("cost"));
+        }
+    }
+    public int checkNumberOfProducts() throws SQLException {
+        int countProducts = 0;
+        CustomerRepository customerRepository = new CustomerRepository();
+        int userId = customerRepository.findUserId();
+        Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/store", "root", "Mm1234!@#$");
+        Statement statement = connection.createStatement();
+        ResultSet resultSet = statement.executeQuery("SELECT * FROM customerbuygoods WHERE customerid = '" + userId + "'");
+        while(resultSet.next()){
+            countProducts ++;
+        }
+        return countProducts;
+    }
+    public void addToCart(int productId) throws SQLException {
+        CustomerRepository customerRepository = new CustomerRepository();
+        int userId = customerRepository.findUserId();
+        Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/store", "root", "Mm1234!@#$");
+        PreparedStatement addToCart = connection.prepareStatement("INSERT INTO customerbuygoods (customerid,goodsid)VALUES(?,?)");
+        addToCart.setInt(1,userId);
+        addToCart.setInt(2,productId);
+        addToCart.executeUpdate();
+        System.out.println("the item added to your cart");
+    }
 }

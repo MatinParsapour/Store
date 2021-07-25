@@ -101,6 +101,7 @@ public class CustomerService {
                         seeYourCart();
                         break;
                     case 3:
+                        addToCart();
                         break;
                     case 4:
                         break;
@@ -161,6 +162,7 @@ public class CustomerService {
                     seeYourCart();
                     break;
                 case 3:
+                    addToCart();
                     break;
                 case 4:
                     break;
@@ -243,5 +245,41 @@ public class CustomerService {
         CustomerRepository customerRepository = new CustomerRepository();
         int userId = customerRepository.findUserId();
         productRepository.findProductId(userId);
+    }
+    private static void addToCart() throws SQLException {
+        boolean backToMainMenu = false;
+        ProductRepository productRepository = new ProductRepository();
+        productRepository.findProducts();
+        while(!backToMainMenu){
+            int numberOfProducts = productRepository.checkNumberOfProducts();
+            if(numberOfProducts >= 5){
+                int cartFullChoice = 0;
+                System.out.println("----- you can't buy product more than 5");
+                System.out.println("1.back to menu       2.delete from cart");
+                boolean inputMatch = false;
+                while(!inputMatch){
+                    try{
+                        cartFullChoice = new Scanner(System.in).nextInt();
+                        while(cartFullChoice < 1 || cartFullChoice > 2){
+                            System.out.println("----- invalid choice -----");
+                            System.out.println("try again : ");
+                            cartFullChoice = new Scanner(System.in).nextInt();
+                        }
+                        inputMatch = true;
+                    }catch (InputMismatchException exception){
+                        System.out.println("you should enter a number");
+                        System.out.println("try again: ");
+                    }
+                }
+                if(cartFullChoice == 1){
+                    break;
+                }else{
+                    //delete from you account
+                }
+            }
+            System.out.println("------ enter product id ------");
+            int productId = input.nextInt();
+            productRepository.addToCart(productId);
+        }
     }
 }
