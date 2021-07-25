@@ -1,7 +1,5 @@
 package Service;
 
-import repository.TableRepository;
-
 import java.sql.SQLException;
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -9,10 +7,10 @@ import java.util.Scanner;
 public class Store {
     public static void main(String[] args) throws SQLException {
         boolean exit = false;
-        TableRepository tableRepository = new TableRepository();
-        tableRepository.customerTable();
-        tableRepository.goodsTable();
-        tableRepository.customerBuyGoods();
+        CreateTable createTable = new CreateTable();
+        createTable.customerTable();
+        createTable.goodsTable();
+        createTable.customerBuyGoods();
         System.out.println("------ welcome to store ------");
         while(!exit){
             boolean inputIsCorrect = false;
