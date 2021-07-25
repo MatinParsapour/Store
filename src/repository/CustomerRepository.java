@@ -90,5 +90,12 @@ public class CustomerRepository {
         changeUsername.executeUpdate();
         System.out.println("your username changed");
     }
+    public void clearCart(int userId) throws SQLException {
+        Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/store", "root", "Mm1234!@#$");
+        PreparedStatement clearCart = connection.prepareStatement("DELETE FROM customerbuygoods WHERE customerid = ?");
+        clearCart.setInt(1,userId);
+        clearCart.executeUpdate();
+        System.out.println("your cart is now empty");
+    }
 
 }

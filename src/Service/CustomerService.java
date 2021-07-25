@@ -446,7 +446,7 @@ public class CustomerService {
         if(balance > total){
             int nextBalance = balance - total;
             customerRepository.updateUserBalance(nextBalance,userId);
-            productRepository.clearCart(userId);
+            customerRepository.clearCart(userId);
         }else{
             System.out.println("your balance is not enough");
             System.out.println("     1.charge account     ");
