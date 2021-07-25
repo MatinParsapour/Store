@@ -46,4 +46,22 @@ public class CustomerRepository {
         }
         return userId;
     }
+    public int findCurrentBalance(int userId) throws SQLException {
+        int currentBalance = 0;
+        Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/store", "root", "Mm1234!@#$");
+        Statement statement = connection.createStatement();
+        ResultSet resultSet = statement.executeQuery("SELECT balance FROM customer WHERE id = '" + userId + "'");
+        while(resultSet.next()){
+            currentBalance = resultSet.getInt("balance");
+        }
+        return currentBalance;
+    }
+    public void updateUserBalance(int amount, int userId) throws SQLException {
+        Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/store", "root", "Mm1234!@#$");
+        PreparedStatement updateUserBalance = connection.prepareStatement("UPDATE customer SET balance = ? WHERE id = ?");
+        updateUserBalance.setInt(1,amount);
+        updateUserBalance.setInt(2,userId);
+        updateUserBalance.executeUpdate();
+        System.out.println("you account successfully charged");
+    }
 }

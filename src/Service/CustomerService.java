@@ -28,6 +28,7 @@ public class CustomerService {
                         String password = new Scanner(System.in).next();
                         logIn = customerRepository.checkUsernameAndPassword(username,password);
                         if(logIn){
+                            Customer.setUsername(username);
                             break;
                         }
                         System.out.println("------ username or password is incorrect ------");
@@ -66,7 +67,7 @@ public class CustomerService {
             while(!backToMainMenu){
                 boolean inputMatches = false;
                 System.out.println("----- you logged in -----");
-                System.out.println("     1.charge account    ");
+                System.out.println("     1.charge account            balance = " + customerRepository.findCurrentBalance(customerRepository.findUserId()));
                 System.out.println("     2.see your cart     ");
                 System.out.println("     3.add to your cart  ");
                 System.out.println("  4.delete from you cart ");
@@ -93,6 +94,7 @@ public class CustomerService {
                 }
                 switch (logInChoice){
                     case 1:
+                        CustomerService.chargeAccount();
                         break;
                     case 2:
                         break;
@@ -124,7 +126,7 @@ public class CustomerService {
         while(!backToMainMenu){
             boolean inputMatches = false;
             System.out.println("----- you logged in -----");
-            System.out.println("     1.charge account    ");
+            System.out.println("     1.charge account          balance = " + customerRepository.findCurrentBalance(customerRepository.findUserId()));
             System.out.println("     2.see your cart     ");
             System.out.println("     3.add to your cart  ");
             System.out.println("  4.delete from you cart ");
@@ -151,6 +153,7 @@ public class CustomerService {
             }
             switch (logInChoice){
                 case 1:
+                    CustomerService.chargeAccount();
                     break;
                 case 2:
                     break;
@@ -221,5 +224,15 @@ public class CustomerService {
             matcher = pattern.matcher(password);
         }
         return password;
+    }
+    private static void chargeAccount() throws SQLException {
+        CustomerRepository customerRepository = new CustomerRepository();
+        int userId = customerRepository.findUserId();
+        System.out.println("----- charge account -----");
+        System.out.println("--------- amount ---------");
+        int amount = input.nextInt();
+        int currentBalance = customerRepository.findCurrentBalance(userId);
+        int nextBalance = amount + currentBalance;
+        customerRepository.updateUserBalance(nextBalance,userId);
     }
 }
