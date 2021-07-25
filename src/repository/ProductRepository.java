@@ -19,7 +19,7 @@ public class ProductRepository {
         ResultSet resultSet = statement.executeQuery("SELECT * FROM goods WHERE id = '" + productId + "'");
         while(resultSet.next()){
             System.out.println("id : " + resultSet.getInt("id"));
-            System.out.println("name : " + resultSet.getString("name"));
+            System.out.println("name : " + resultSet.getString("goodsname"));
             System.out.println("cost : " + resultSet.getInt("cost"));
         }
     }
@@ -56,5 +56,24 @@ public class ProductRepository {
         addToCart.setInt(2,productId);
         addToCart.executeUpdate();
         System.out.println("the item added to your cart");
+    }
+    public boolean checkProductId(int productId) throws SQLException {
+        boolean idIsCorrect = false;
+        CustomerRepository customerRepository = new CustomerRepository();
+        int userId= customerRepository.findUserId();
+        Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/store", "root", "Mm1234!@#$");
+        Statement statement = connection.createStatement();
+        ResultSet resultSet = statement.executeQuery("SELECT * FROM customerbuygoods WHERE customerid = '" + userId + "' and goodsid = '" + productId + "'");
+        while(resultSet.next()){
+            idIsCorrect = true;
+        }
+        return idIsCorrect;
+    }
+    public void deleteProduct(int productId) throws SQLException {
+        Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/store", "root", "Mm1234!@#$");
+        PreparedStatement deleteProduct = connection.prepareStatement("DELETE FROM customerbuygoods WHERE goodsid = ? LIMIT 1");
+        deleteProduct.setInt(1,productId);
+        deleteProduct.executeUpdate();
+        System.out.println("the product successfully deleted");
     }
 }
