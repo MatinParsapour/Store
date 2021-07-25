@@ -110,6 +110,7 @@ public class CustomerService {
                         changePassword();
                         break;
                     case 6:
+                        changeUsername();
                         break;
                     case 7:
                         break;
@@ -173,6 +174,7 @@ public class CustomerService {
                     changePassword();
                     break;
                 case 6:
+                    changeUsername();
                     break;
                 case 7:
                     break;
@@ -334,7 +336,7 @@ public class CustomerService {
         while(!inputMatch){
             try{
                 System.out.println("1.change password        2.back to menu");
-                System.out.println(":");
+                System.out.print(":");
                 choice = new Scanner(System.in).nextInt();
                 while(choice < 1 || choice > 2){
                     System.out.println("----- invalid choice -----");
@@ -353,6 +355,45 @@ public class CustomerService {
             customerRepository.changePassword(password);
         }else{
             System.out.println("you password didn't change");
+        }
+    }
+    private static void changeUsername() throws SQLException {
+        CustomerRepository customerRepository = new CustomerRepository();
+        System.out.println("your username is : " + Customer.getUsername());
+        boolean inputMatch = false;
+        int choice = 0;
+        while(!inputMatch){
+            try{
+                System.out.println("1.change username        2.back to menu");
+                System.out.print(":");
+                choice = new Scanner(System.in).nextInt();
+                while(choice < 1 || choice > 2){
+                    System.out.println("----- invalid choice -----");
+                    System.out.print("try again: ");
+                    choice = new Scanner(System.in).nextInt();
+                }
+                inputMatch = true;
+            }catch (InputMismatchException exception){
+                System.out.println("you should enter a number");
+                System.out.println("try again: ");
+            }
+        }
+        if(choice == 1){
+            System.out.println("----- new username -----");
+            String username = input.next();
+            boolean usernameAccepted = customerRepository.checkUsername(username);
+            while(usernameAccepted){
+                System.out.println("----- invalid username ------");
+                System.out.println("there is a username like this");
+                System.out.print("try again: ");
+                username = input.next();
+                usernameAccepted = customerRepository.checkUsername(username);
+            }
+            int userId = customerRepository.findUserId();
+            Customer.setUsername(username);
+            customerRepository.changeUsername(userId);
+        }else{
+            System.out.println("you username didn't change");
         }
     }
 }

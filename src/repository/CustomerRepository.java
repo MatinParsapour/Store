@@ -82,4 +82,13 @@ public class CustomerRepository {
         changePassword.executeUpdate();
         System.out.println("your password changed");
     }
+    public void changeUsername(int userId) throws SQLException {
+        Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/store", "root", "Mm1234!@#$");
+        PreparedStatement changeUsername = connection.prepareStatement("UPDATE customer SET username = ? WHERE id = ?");
+        changeUsername.setString(1,Customer.getUsername());
+        changeUsername.setInt(2,userId);
+        changeUsername.executeUpdate();
+        System.out.println("your username changed");
+    }
+
 }
