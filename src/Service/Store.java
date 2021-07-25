@@ -1,11 +1,14 @@
 package Service;
 
+import repository.CustomerRepository;
+
 import java.sql.SQLException;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Store {
     public static void main(String[] args) throws SQLException {
+        CustomerService  customerService = new CustomerService();
         boolean exit = false;
         CreateTable createTable = new CreateTable();
         createTable.customerTable();
@@ -37,7 +40,7 @@ public class Store {
             }
             switch (choice){
                 case 1:
-                    System.out.println("you logged in");
+                    customerService.logIn();
                     break;
                 case 2:
                     System.out.println("you signed up");

@@ -4,7 +4,7 @@ import java.sql.*;
 
 public class CreateTable {
     public void  customerTable() throws SQLException {
-        Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/website", "root", "Mm1234!@#$");
+        Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/store", "root", "Mm1234!@#$");
         Statement statement = connection.createStatement();
         statement.execute("CREATE TABLE IF NOT EXISTS `store`.`customer` (\n" +
                 "  `id` INT NOT NULL AUTO_INCREMENT,\n" +
@@ -26,7 +26,7 @@ public class CreateTable {
                 "  PRIMARY KEY (`id`));\n");
     }
     public void customerBuyGoods()throws SQLException{
-        Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/website", "root", "Mm1234!@#$");
+        Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/store", "root", "Mm1234!@#$");
         Statement statement = connection.createStatement();
         statement.execute("CREATE TABLE IF NOT EXISTS `store`.`customerbuygoods` (\n" +
                 "  `customerid` INT NOT NULL,\n" +
