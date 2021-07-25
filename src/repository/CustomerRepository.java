@@ -97,5 +97,15 @@ public class CustomerRepository {
         clearCart.executeUpdate();
         System.out.println("your cart is now empty");
     }
-
+    public boolean checkCart(int userId) throws SQLException {
+        boolean cartChecked = false;
+        Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/store", "root", "Mm1234!@#$");
+        Statement statement = connection.createStatement();
+        ResultSet resultSet = statement.executeQuery("SELECT customerid FROM customerbuygoods WHERE customerid = '" + userId + "'");
+        while(resultSet.next()){
+            cartChecked = true;
+            break;
+        }
+        return cartChecked;
+    }
 }
