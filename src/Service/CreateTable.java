@@ -19,10 +19,11 @@ public class CreateTable {
         Statement statement = connection.createStatement();
         statement.execute("CREATE TABLE IF NOT EXISTS `store`.`goods` (\n" +
                 "  `id` INT NOT NULL AUTO_INCREMENT,\n" +
-                "  `goodsname` VARCHAR(45) NOT NULL,\n" +
-                "  `category` VARCHAR(50) NOT NULL,\n" +
-                "  `subcategory` VARCHAR(50) NOT NULL,\n" +
-                "  `cost` INT NULL,\n" +
+                "  `name` VARCHAR(100) NOT NULL,\n" +
+                "  `category` VARCHAR(45) NOT NULL,\n" +
+                "  `subcategory` VARCHAR(45) NOT NULL,\n" +
+                "  `cost` INT NOT NULL,\n" +
+                "  `number` INT NOT NULL DEFAULT 20,\n" +
                 "  PRIMARY KEY (`id`));\n");
     }
     public void customerBuyGoods()throws SQLException{
