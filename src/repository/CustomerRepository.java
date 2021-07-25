@@ -64,4 +64,22 @@ public class CustomerRepository {
         updateUserBalance.executeUpdate();
         System.out.println("you account successfully charged");
     }
+    public void findPassword() throws SQLException {
+        int userId = findUserId();
+        Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/store", "root", "Mm1234!@#$");
+        Statement statement = connection.createStatement();
+        ResultSet resultSet = statement.executeQuery("SELECT * FROM customer WHERE id = '" + userId + "'");
+        while(resultSet.next()){
+            System.out.println("your password : " + resultSet.getInt("password"));
+        }
+    }
+    public void changePassword(int password) throws SQLException {
+        Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/store", "root", "Mm1234!@#$");
+        int userId = findUserId();
+        PreparedStatement changePassword = connection.prepareStatement("UPDATE customer SET password = ? WHERE id = ?");
+        changePassword.setInt(1,password);
+        changePassword.setInt(2,userId);
+        changePassword.executeUpdate();
+        System.out.println("your password changed");
+    }
 }

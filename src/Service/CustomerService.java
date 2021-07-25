@@ -107,6 +107,7 @@ public class CustomerService {
                         deleteFromCart();
                         break;
                     case 5:
+                        changePassword();
                         break;
                     case 6:
                         break;
@@ -169,6 +170,7 @@ public class CustomerService {
                     deleteFromCart();
                     break;
                 case 5:
+                    changePassword();
                     break;
                 case 6:
                     break;
@@ -322,6 +324,35 @@ public class CustomerService {
             }else{
                 break;
             }
+        }
+    }
+    private static void changePassword() throws SQLException {
+        CustomerRepository customerRepository = new CustomerRepository();
+        customerRepository.findPassword();
+        boolean inputMatch = false;
+        int choice = 0;
+        while(!inputMatch){
+            try{
+                System.out.println("1.change password        2.back to menu");
+                System.out.println(":");
+                choice = new Scanner(System.in).nextInt();
+                while(choice < 1 || choice > 2){
+                    System.out.println("----- invalid choice -----");
+                    System.out.print("try again: ");
+                    choice = new Scanner(System.in).nextInt();
+                }
+                inputMatch = true;
+            }catch (InputMismatchException exception){
+                System.out.println("you should enter a number");
+                System.out.println("try again: ");
+            }
+        }
+        if(choice == 1){
+            System.out.println("----- new password -----");
+            int password = input.nextInt();
+            customerRepository.changePassword(password);
+        }else{
+            System.out.println("you password didn't change");
         }
     }
 }
