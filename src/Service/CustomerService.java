@@ -284,9 +284,30 @@ public class CustomerService {
                 }
                 break;
             }
-            System.out.println("------ enter product id ------");
-            int productId = input.nextInt();
-            productRepository.addToCart(productId);
+            boolean inputIsCorrect = false;
+            while(!inputIsCorrect){
+                try{
+                    System.out.println("1.enter product id           2.back to menu");
+                    int choice = input.nextInt();
+                    while(choice < 1 || choice > 2){
+                        System.out.println("----- invalid choice -----");
+                        System.out.print("try again: ");
+                        choice = input.nextInt();
+                    }
+                    if(choice == 1){
+                        System.out.print("product id: ");
+                        int productId = input.nextInt();
+                        productRepository.addToCart(productId);
+                        inputIsCorrect = true;
+                    }else{
+                        inputIsCorrect = true;
+                        backToMainMenu = true;
+                    }
+                }catch (InputMismatchException exception){
+                    System.out.println("you should write a number");
+                    System.out.print("try again: ");
+                }
+            }
         }
     }
     private static void deleteFromCart() throws SQLException {
@@ -298,7 +319,7 @@ public class CustomerService {
             int choice = 0;
             System.out.println("   1.delete from cart   ");
             System.out.println("   2.back to main menu  ");
-            System.out.println(":");
+            System.out.print(":");
             while(!inputMatch){
                 try{
                     choice = new Scanner(System.in).nextInt();

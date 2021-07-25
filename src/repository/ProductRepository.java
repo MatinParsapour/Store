@@ -1,5 +1,7 @@
 package repository;
 
+import entity.Goods;
+
 import java.sql.*;
 
 public class ProductRepository {
@@ -19,7 +21,7 @@ public class ProductRepository {
         ResultSet resultSet = statement.executeQuery("SELECT * FROM goods WHERE id = '" + productId + "'");
         while(resultSet.next()){
             System.out.println("id : " + resultSet.getInt("id"));
-            System.out.println("name : " + resultSet.getString("goodsname"));
+            System.out.println("name : " + resultSet.getString("name"));
             System.out.println("cost : " + resultSet.getInt("cost"));
         }
     }
@@ -30,7 +32,7 @@ public class ProductRepository {
         while(resultSet.next()){
             System.out.println("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
             System.out.println("id : " + resultSet.getInt("id"));
-            System.out.println("name : " + resultSet.getString("goodsname"));
+            System.out.println("name : " + resultSet.getString("name"));
             System.out.println("category : " + resultSet.getString("category"));
             System.out.println("subcategory : " + resultSet.getString("subcategory"));
             System.out.println("cost : " + resultSet.getInt("cost"));
@@ -56,6 +58,9 @@ public class ProductRepository {
         addToCart.setInt(1,userId);
         addToCart.setInt(2,productId);
         addToCart.executeUpdate();
+        Goods.setGoodsId(productId);
+        int numberOfProduct = findNumberOfProduct(Goods.getGoodsId());
+        decreaseInventory(numberOfProduct-1);
         System.out.println("the item added to your cart");
     }
     public boolean checkProductId(int productId) throws SQLException {
@@ -75,6 +80,33 @@ public class ProductRepository {
         PreparedStatement deleteProduct = connection.prepareStatement("DELETE FROM customerbuygoods WHERE goodsid = ? LIMIT 1");
         deleteProduct.setInt(1,productId);
         deleteProduct.executeUpdate();
+        Goods.setGoodsId(productId);
+        int numberOfProduct = findNumberOfProduct(Goods.getGoodsId());
+        increaseInventory(numberOfProduct+1);
         System.out.println("the product successfully deleted");
+    }
+    private static int findNumberOfProduct(int productId) throws SQLException {
+        int numberOfProducts = 0;
+        Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/store", "root", "Mm1234!@#$");
+        Statement statement = connection.createStatement();
+        ResultSet resultSet = statement.executeQuery("SELECT number FROM goods WHERE id = '" + productId + "'");
+        while(resultSet.next()){
+            numberOfProducts = resultSet.getInt("number");
+        }
+        return numberOfProducts;
+    }
+    private static void decreaseInventory(int numberOfProduct) throws SQLException {
+        Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/store", "root", "Mm1234!@#$");
+        PreparedStatement decreaseInventory = connection.prepareStatement("UPDATE goods SET number = ? WHERE id = ?");
+        decreaseInventory.setInt(1,numberOfProduct);
+        decreaseInventory.setInt(2,Goods.getGoodsId());
+        decreaseInventory.executeUpdate();
+    }
+    private static void increaseInventory(int numberOfProduct) throws SQLException {
+        Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/store", "root", "Mm1234!@#$");
+        PreparedStatement increaseInventory = connection.prepareStatement("UPDATE goods SET number = ? WHERE id = ?");
+        increaseInventory.setInt(1,numberOfProduct);
+        increaseInventory.setInt(2,Goods.getGoodsId());
+        increaseInventory.executeUpdate();
     }
 }
