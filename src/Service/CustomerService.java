@@ -63,9 +63,53 @@ public class CustomerService {
                     System.out.println("try again: ");
                 }
             }
-            if(!backToMainMenu){
-                System.out.println("show menu");
-                backToMainMenu = true;
+            while(!backToMainMenu){
+                boolean inputMatches = false;
+                System.out.println("----- you logged in -----");
+                System.out.println("     1.charge account    ");
+                System.out.println("     2.see your cart     ");
+                System.out.println("     3.add to your cart  ");
+                System.out.println("  4.delete from you cart ");
+                System.out.println("    5.change password    ");
+                System.out.println("    6.change username    ");
+                System.out.println("      7.view products    ");
+                System.out.println("         8.exit          ");
+                System.out.println("-------------------------");
+                System.out.print("choose: ");
+                int logInChoice = 0;
+                while(!inputMatches){
+                    try{
+                        logInChoice = input.nextInt();
+                        while(logInChoice < 1 || logInChoice > 8){
+                            System.out.println("----- invalid choice -----");
+                            System.out.print("try again : ");
+                            logInChoice = input.nextInt();
+                        }
+                        inputMatches = true;
+                    }catch (InputMismatchException exception){
+                        System.out.println("you should enter a number");
+                        System.out.print("try again: ");
+                    }
+                }
+                switch (logInChoice){
+                    case 1:
+                        break;
+                    case 2:
+                        break;
+                    case 3:
+                        break;
+                    case 4:
+                        break;
+                    case 5:
+                        break;
+                    case 6:
+                        break;
+                    case 7:
+                        break;
+                    case 8:
+                        backToMainMenu = true;
+                        break;
+                }
             }
         }
     }
@@ -76,6 +120,55 @@ public class CustomerService {
         Customer.setUsername(CustomerService.username());
         Customer.setPassword(CustomerService.password());
         customerRepository.insertCustomer();
+        boolean backToMainMenu = false;
+        while(!backToMainMenu){
+            boolean inputMatches = false;
+            System.out.println("----- you logged in -----");
+            System.out.println("     1.charge account    ");
+            System.out.println("     2.see your cart     ");
+            System.out.println("     3.add to your cart  ");
+            System.out.println("  4.delete from you cart ");
+            System.out.println("    5.change password    ");
+            System.out.println("    6.change username    ");
+            System.out.println("      7.view products    ");
+            System.out.println("         8.exit          ");
+            System.out.println("-------------------------");
+            System.out.print("choose: ");
+            int logInChoice = 0;
+            while(!inputMatches){
+                try{
+                    logInChoice = input.nextInt();
+                    while(logInChoice < 1 || logInChoice > 8){
+                        System.out.println("----- invalid choice -----");
+                        System.out.print("try again : ");
+                        logInChoice = input.nextInt();
+                    }
+                    inputMatches = true;
+                }catch (InputMismatchException exception){
+                    System.out.println("you should enter a number");
+                    System.out.print("try again: ");
+                }
+            }
+            switch (logInChoice){
+                case 1:
+                    break;
+                case 2:
+                    break;
+                case 3:
+                    break;
+                case 4:
+                    break;
+                case 5:
+                    break;
+                case 6:
+                    break;
+                case 7:
+                    break;
+                case 8:
+                    backToMainMenu = true;
+                    break;
+            }
+        }
     }
     private static String name(){
         String name = null;
