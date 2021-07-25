@@ -62,7 +62,7 @@ public class CustomerRepository {
         updateUserBalance.setInt(1,amount);
         updateUserBalance.setInt(2,userId);
         updateUserBalance.executeUpdate();
-        System.out.println("you account successfully charged");
+        System.out.println("you account successfully changed");
     }
     public void findPassword() throws SQLException {
         int userId = findUserId();

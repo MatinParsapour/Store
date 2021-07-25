@@ -75,14 +75,15 @@ public class CustomerService {
                 System.out.println("    5.change password    ");
                 System.out.println("    6.change username    ");
                 System.out.println("      7.view products    ");
-                System.out.println("         8.exit          ");
+                System.out.println("      8.final purchase   ");
+                System.out.println("         9.exit          ");
                 System.out.println("-------------------------");
                 System.out.print("choose: ");
                 int logInChoice = 0;
                 while(!inputMatches){
                     try{
                         logInChoice = input.nextInt();
-                        while(logInChoice < 1 || logInChoice > 8){
+                        while(logInChoice < 1 || logInChoice > 9){
                             System.out.println("----- invalid choice -----");
                             System.out.print("try again : ");
                             logInChoice = input.nextInt();
@@ -116,6 +117,9 @@ public class CustomerService {
                         viewProducts();
                         break;
                     case 8:
+                        finalPurchase();
+                        break;
+                    case 9:
                         backToMainMenu = true;
                         break;
                 }
@@ -140,14 +144,14 @@ public class CustomerService {
             System.out.println("    5.change password    ");
             System.out.println("    6.change username    ");
             System.out.println("      7.view products    ");
-            System.out.println("         8.exit          ");
+            System.out.println("         9.exit          ");
             System.out.println("-------------------------");
             System.out.print("choose: ");
             int logInChoice = 0;
             while(!inputMatches){
                 try{
                     logInChoice = input.nextInt();
-                    while(logInChoice < 1 || logInChoice > 8){
+                    while(logInChoice < 1 || logInChoice > 9){
                         System.out.println("----- invalid choice -----");
                         System.out.print("try again : ");
                         logInChoice = input.nextInt();
@@ -181,6 +185,9 @@ public class CustomerService {
                     viewProducts();
                     break;
                 case 8:
+                    finalPurchase();
+                    break;
+                case 9:
                     backToMainMenu = true;
                     break;
             }
@@ -429,5 +436,48 @@ public class CustomerService {
         ProductRepository productRepository = new ProductRepository();
         System.out.println("------ view products ------");
         productRepository.findProducts();
+    }
+    private static void finalPurchase() throws SQLException {
+        CustomerRepository customerRepository = new CustomerRepository();
+        ProductRepository productRepository = new ProductRepository();
+        int userId = customerRepository.findUserId();
+        int balance = customerRepository.findCurrentBalance(userId);
+        int total = productRepository.total(userId);
+        if(balance > total){
+            int nextBalance = balance - total;
+            customerRepository.updateUserBalance(nextBalance,userId);
+            productRepository.clearCart(userId);
+        }else{
+            System.out.println("your balance is not enough");
+            System.out.println("     1.charge account     ");
+            System.out.println("    2.delete from cart    ");
+            System.out.println("     3.back to menu       ");
+            boolean inputMatch = false;
+            int choice = 0;
+            while(!inputMatch){
+                try{
+                    choice = new Scanner(System.in).nextInt();
+                    while(choice < 1 || choice > 2){
+                        System.out.println("----- invalid choice -----");
+                        System.out.print("try again: ");
+                        choice = new Scanner(System.in).nextInt();
+                    }
+                    inputMatch = true;
+                }catch (InputMismatchException exception){
+                    System.out.println("you should enter a number");
+                    System.out.print("try again: ");
+                }
+            }
+            switch (choice){
+                case 1:
+                    chargeAccount();
+                    break;
+                case 2:
+                    deleteFromCart();
+                    break;
+                case 3:
+                    break;
+            }
+        }
     }
 }

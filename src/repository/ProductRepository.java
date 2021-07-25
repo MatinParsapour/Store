@@ -119,4 +119,32 @@ public class ProductRepository {
         }
         return inventory;
     }
+    public int total(int userId) throws SQLException {
+        int total = 0;
+        Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/store", "root", "Mm1234!@#$");
+        Statement statement = connection.createStatement();
+        ResultSet resultSet = statement.executeQuery("SELECT goodsid FROM customerbuygoods WHERE customerid = '" + userId + "'");
+        while(resultSet.next()){
+            int productId = resultSet.getInt("goodsid");
+            total += findCosts(productId);
+        }
+        return total;
+    }
+    private static int findCosts(int productId) throws SQLException {
+        int cost = 0;
+        Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/store", "root", "Mm1234!@#$");
+        Statement statement = connection.createStatement();
+        ResultSet resultSet = statement.executeQuery("SELECT cost FROM goods WHERE id = '" + productId + "'");
+        while (resultSet.next()){
+            cost = resultSet.getInt("cost");
+        }
+        return cost;
+    }
+    public void clearCart(int userId) throws SQLException {
+        Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/store", "root", "Mm1234!@#$");
+        PreparedStatement clearCart = connection.prepareStatement("DELETE FROM customerbuygoods WHERE customerid = ?");
+        clearCart.setInt(1,userId);
+        clearCart.executeUpdate();
+        System.out.println("your cart is now empty");
+    }
 }
