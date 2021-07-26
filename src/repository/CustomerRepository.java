@@ -120,4 +120,34 @@ public class CustomerRepository {
         }
         return userIsVerify;
     }
+    public void findUnverifiedPeople() throws SQLException {
+        Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/store", "root", "Mm1234!@#$");
+        Statement statement = connection.createStatement();
+        ResultSet resultSet = statement.executeQuery("SELECT * FROM customer WHERE verify = 0 ");
+        while(resultSet.next()){
+            System.out.println("id : " + resultSet.getInt("id"));
+            System.out.println("name : " + resultSet.getString("name"));
+            System.out.println("username : " + resultSet.getString("username"));
+            System.out.println("status : " + resultSet.getInt("verify"));
+        }
+    }
+    public boolean checkCustomerStatus(int customerId) throws SQLException {
+        boolean canVerify = false;
+        Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/store", "root", "Mm1234!@#$");
+        Statement statement = connection.createStatement();
+        ResultSet resultSet = statement.executeQuery("SELECT verify FROM customer WHERE id = '" + customerId + "'");
+        while(resultSet.next()){
+            if(resultSet.getInt("verify") == 0){
+                canVerify = true;
+            }
+        }
+        return canVerify;
+    }
+    public void verifyPerson(int customerId) throws SQLException {
+        Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/store", "root", "Mm1234!@#$");
+        PreparedStatement verifyPerson = connection.prepareStatement("UPDATE customer SET verify = 1 WHERE id = ?");
+        verifyPerson.setInt(1,customerId);
+        verifyPerson.executeUpdate();
+        System.out.println("the customer successfully verified");
+    }
 }

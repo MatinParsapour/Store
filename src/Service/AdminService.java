@@ -2,6 +2,7 @@ package Service;
 
 import entity.Admin;
 import repository.AdminRepository;
+import repository.CustomerRepository;
 import repository.ProductRepository;
 
 import java.sql.SQLException;
@@ -100,6 +101,7 @@ public class AdminService {
                     increaseInventory();
                     break;
                 case 4:
+                    verifyPerson();
                     break;
                 case 5:
                     break;
@@ -181,6 +183,46 @@ public class AdminService {
             }catch (InputMismatchException exception){
                 System.out.println("you should enter a number");
                 System.out.println("try again: ");
+            }
+        }
+    }
+    private static void verifyPerson() throws SQLException {
+        CustomerRepository customerRepository = new CustomerRepository();
+        customerRepository.findUnverifiedPeople();
+        while(true){
+            try{
+                System.out.println("do you want to verify a person? 1.yes  2.no");
+                int choice = new Scanner(System.in).nextInt();
+                while (choice < 1 || choice > 2){
+                    System.out.println("you should choose between menu options");
+                    System.out.print("try again: ");
+                    choice = new Scanner(System.in).nextInt();
+                }
+                if(choice == 1){
+                    System.out.println("------ customer id ------");
+                    int customerId = new Scanner(System.in).nextInt();
+                    boolean canVerify = customerRepository.checkCustomerStatus(customerId);
+                    if(canVerify){
+                        customerRepository.verifyPerson(customerId);
+                    }else{
+                        System.out.println("this id is not available to verify");
+                        System.out.println("1.try again         2.back to menu");
+                        int idIsIncorrect = new Scanner(System.in).nextInt();
+                        while (idIsIncorrect < 1 || idIsIncorrect > 2){
+                            System.out.println("you should choose between menu options");
+                            System.out.print("try again : ");
+                            idIsIncorrect = new Scanner(System.in).nextInt();
+                        }
+                        if(idIsIncorrect == 2){
+                            break;
+                        }
+                    }
+                }else{
+                    break;
+                }
+            }catch (InputMismatchException exception){
+                System.out.println("you should enter a number");
+                System.out.println("try again : ");
             }
         }
     }
