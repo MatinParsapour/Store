@@ -1,10 +1,13 @@
 package Service;
 
 import entity.Admin;
+import entity.Goods;
 import repository.AdminRepository;
+import repository.ProductRepository;
 
 import java.sql.SQLException;
 import java.util.InputMismatchException;
+import java.util.Locale;
 import java.util.Scanner;
 
 public class AdminService {
@@ -58,7 +61,7 @@ public class AdminService {
             }
         }
     }
-    private static void adminMenu(){
+    private static void adminMenu() throws SQLException {
         boolean mainMenu = false;
         while(!mainMenu){
             System.out.println("<><><><><> welcome <><><><><>");
@@ -90,6 +93,7 @@ public class AdminService {
             }
             switch (adminChoice){
                 case 1:
+                    addProduct();
                     break;
                 case 2:
                     break;
@@ -104,6 +108,36 @@ public class AdminService {
                 case 7:
                     mainMenu = true;
                     break;
+            }
+        }
+    }
+    private static void addProduct() throws SQLException {
+        ProductService productService = new ProductService();
+        ProductRepository productRepository = new ProductRepository();
+        productRepository.findProducts();
+
+        int addChoice = 0;
+        while(true){
+            System.out.println("do you want to add a product? 1.Yes    2.No");
+            boolean inputMatch = false;
+            while(!inputMatch){
+                try{
+                    addChoice = new Scanner(System.in).nextInt();
+                    while(addChoice < 1 || addChoice > 2){
+                        System.out.println("you should choose between menu options");
+                        System.out.print("try again: ");
+                        addChoice = new Scanner(System.in).nextInt();
+                    }
+                    inputMatch = true;
+                }catch (InputMismatchException exception){
+                    System.out.println("you should enter a number");
+                    System.out.print("try again: ");
+                }
+            }
+            if(addChoice == 1){
+                productService.productInformation();
+            }else{
+                break;
             }
         }
     }
