@@ -181,4 +181,65 @@ public class ProductService {
         }
         return  number;
     }
+    public void deleteProduct () throws SQLException {
+        ProductRepository productRepository = new ProductRepository();
+        boolean productDeleted = false;
+        while(!productDeleted){
+            try{
+                System.out.println("------ product id ------");
+                int productId = new Scanner(System.in).nextInt();
+                System.out.println("this id is ok? 1.yes 2. no");
+                int choice = new Scanner(System.in).nextInt();
+                while(choice < 1 || choice > 2){
+                    System.out.println("you should choose between menu options");
+                    System.out.println("try again: ");
+                    choice = new Scanner(System.in).nextInt();
+                }
+                if(choice == 1){
+                    boolean idIsCorrect = productRepository.checkgoodsId(productId);
+                    if(idIsCorrect){
+                        productRepository.deleteGoods(productId);
+                        break;
+                    }else{
+                        System.out.println("this is incorrect");
+                        System.out.println("   1.try again   ");
+                        System.out.println(" 2.back to menu  ");
+                        System.out.println("-----------------");
+                        System.out.print(":");
+                        int incorrectId = new Scanner(System.in).nextInt();
+                        while(incorrectId < 1 || incorrectId > 2){
+                            System.out.println("you should choose between menu options");
+                            System.out.print("try again: ");
+                            incorrectId = new Scanner(System.in).nextInt();
+                        }
+                        switch (incorrectId){
+                            case 1:
+                                break;
+                            case 2:
+                                productDeleted = true;
+                                break;
+                        }
+                    }
+                }else{
+                    System.out.println("1.try again   2.back to menu");
+                    int select = new Scanner(System.in).nextInt();
+                    while(select < 1 || select > 2){
+                        System.out.println("you should choose between menu options");
+                        System.out.print("try again: ");
+                        select = new Scanner(System.in).nextInt();
+                    }
+                    switch (select){
+                        case 1:
+                            break;
+                        case 2:
+                            productDeleted = true;
+                            break;
+                    }
+                }
+            }catch (InputMismatchException exception){
+                System.out.println("you should enter a number");
+                System.out.print("try again : ");
+            }
+        }
+    }
 }

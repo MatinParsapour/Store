@@ -62,9 +62,9 @@ public class AdminService {
         }
     }
     private static void adminMenu() throws SQLException {
+        System.out.println("<><><><><> welcome <><><><><>");
         boolean mainMenu = false;
         while(!mainMenu){
-            System.out.println("<><><><><> welcome <><><><><>");
             int adminChoice = 0;
             boolean inputIsIncorrect = true;
             while(inputIsIncorrect){
@@ -96,6 +96,7 @@ public class AdminService {
                     addProduct();
                     break;
                 case 2:
+                    deleteProduct();
                     break;
                 case 3:
                     break;
@@ -115,29 +116,49 @@ public class AdminService {
         ProductService productService = new ProductService();
         ProductRepository productRepository = new ProductRepository();
         productRepository.findProducts();
-
-        int addChoice = 0;
         while(true){
-            System.out.println("do you want to add a product? 1.Yes    2.No");
-            boolean inputMatch = false;
-            while(!inputMatch){
-                try{
-                    addChoice = new Scanner(System.in).nextInt();
-                    while(addChoice < 1 || addChoice > 2){
-                        System.out.println("you should choose between menu options");
-                        System.out.print("try again: ");
-                        addChoice = new Scanner(System.in).nextInt();
-                    }
-                    inputMatch = true;
-                }catch (InputMismatchException exception){
-                    System.out.println("you should enter a number");
+            try{
+                System.out.println("do you want to add a product? 1.Yes    2.No");
+                int addChoice = new Scanner(System.in).nextInt();
+                while(addChoice < 1 || addChoice > 2){
+                    System.out.println("you should choose between menu options");
                     System.out.print("try again: ");
+                    addChoice = new Scanner(System.in).nextInt();
                 }
+                if(addChoice == 1){
+                    productService.productInformation();
+                }else{
+                    break;
+                }
+            }catch (InputMismatchException exception){
+                System.out.println("you should enter a number");
+                System.out.print("try again: ");
             }
-            if(addChoice == 1){
-                productService.productInformation();
-            }else{
-                break;
+
+        }
+    }
+    private static void deleteProduct() throws SQLException {
+        ProductRepository productRepository = new ProductRepository();
+        ProductService productService = new ProductService();
+        productRepository.findProducts();
+        while(true){
+            try{
+                System.out.println("do you want to delete a product? 1.yes   2.no");
+                int deleteProduct = new Scanner(System.in).nextInt();
+                while(deleteProduct < 1 || deleteProduct > 2){
+                    System.out.println("you should choose between menu options");
+                    System.out.print("try again : ");
+                    deleteProduct = new Scanner(System.in).nextInt();
+                }
+                if(deleteProduct == 1){
+                    productService.deleteProduct();
+                    break;
+                }else{
+                    break;
+                }
+            }catch (InputMismatchException exception){
+                System.out.println("you should enter a number");
+                System.out.print("try again: ");
             }
         }
     }

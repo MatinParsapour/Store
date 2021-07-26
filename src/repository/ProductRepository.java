@@ -169,4 +169,22 @@ public class ProductRepository {
         }
         return categoryExists;
     }
+    public boolean checkgoodsId(int productId) throws SQLException {
+        boolean itsCorrect = false;
+        Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/store", "root", "Mm1234!@#$");
+        Statement statement = connection.createStatement();
+        ResultSet resultSet = statement.executeQuery("SELECT * FROM goods WHERE id = '" + productId + "'");
+        while(resultSet.next()){
+            itsCorrect = true;
+        }
+        return itsCorrect;
+    }
+    public void deleteGoods(int productId) throws SQLException {
+        Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/store", "root", "Mm1234!@#$");
+        PreparedStatement deleteGood = connection.prepareStatement("DELETE FROM goods WHERE id = ?");
+        deleteGood.setInt(1,productId);
+        deleteGood.executeUpdate();
+        System.out.println("your product deleted");
+
+    }
 }
