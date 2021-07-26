@@ -1,13 +1,11 @@
 package Service;
 
 import entity.Admin;
-import entity.Goods;
 import repository.AdminRepository;
 import repository.ProductRepository;
 
 import java.sql.SQLException;
 import java.util.InputMismatchException;
-import java.util.Locale;
 import java.util.Scanner;
 
 public class AdminService {
@@ -99,6 +97,7 @@ public class AdminService {
                     deleteProduct();
                     break;
                 case 3:
+                    increaseInventory();
                     break;
                 case 4:
                     break;
@@ -152,13 +151,36 @@ public class AdminService {
                 }
                 if(deleteProduct == 1){
                     productService.deleteProduct();
-                    break;
                 }else{
                     break;
                 }
             }catch (InputMismatchException exception){
                 System.out.println("you should enter a number");
                 System.out.print("try again: ");
+            }
+        }
+    }
+    private static void increaseInventory() throws SQLException {
+        ProductRepository productRepository = new ProductRepository();
+        ProductService productService = new ProductService();
+        productRepository.findProducts();
+        while(true){
+            try{
+                System.out.println("do you want to increase inventory? 1.yes  2.no");
+                int choice = new Scanner(System.in).nextInt();
+                while(choice < 1 || choice > 2){
+                    System.out.println("you should choose between menu options");
+                    System.out.print("try again: ");
+                    choice = new Scanner(System.in).nextInt();
+                }
+                if(choice == 1){
+                    productService.increaseInventory();
+                }else{
+                    break;
+                }
+            }catch (InputMismatchException exception){
+                System.out.println("you should enter a number");
+                System.out.println("try again: ");
             }
         }
     }

@@ -238,7 +238,41 @@ public class ProductService {
                 }
             }catch (InputMismatchException exception){
                 System.out.println("you should enter a number");
-                System.out.print("try again : ");
+                System.out.println("try again : ");
+            }
+        }
+    }
+    public void increaseInventory() throws SQLException {
+        ProductRepository productRepository = new ProductRepository();
+        while(true){
+            try{
+                System.out.println("----- product id -----");
+                int productId = new Scanner(System.in).nextInt();
+                boolean idIsOk = productRepository.checkgoodsId(productId);
+                if(idIsOk){
+                    int numberOfProduct = productRepository.findNumberOfProduct(productId);
+                    System.out.println("number : " + numberOfProduct);
+                    System.out.println("----- amount -----");
+                    int amount = new Scanner(System.in).nextInt();
+                    int inventory = numberOfProduct + amount;
+                    productRepository.updateInventory(inventory,productId);
+                    break;
+                }else{
+                    System.out.println("this product isn't in the inventory");
+                    System.out.println("1.try again          2.back to menu");
+                    int choice = new Scanner(System.in).nextInt();
+                    while(choice < 1 || choice > 2){
+                        System.out.println("you should choose between menu options");
+                        System.out.print("try again: ");
+                        choice = new Scanner(System.in).nextInt();
+                    }
+                    if(choice == 2){
+                        break;
+                    }
+                }
+            }catch (InputMismatchException exception){
+                System.out.println("you should enter a number");
+                System.out.println("try again: ");
             }
         }
     }

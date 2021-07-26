@@ -85,7 +85,7 @@ public class ProductRepository {
         increaseInventory(numberOfProduct+1);
         System.out.println("the product successfully deleted");
     }
-    private static int findNumberOfProduct(int productId) throws SQLException {
+    public static int findNumberOfProduct(int productId) throws SQLException {
         int numberOfProducts = 0;
         Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/store", "root", "Mm1234!@#$");
         Statement statement = connection.createStatement();
@@ -186,5 +186,13 @@ public class ProductRepository {
         deleteGood.executeUpdate();
         System.out.println("your product deleted");
 
+    }
+    public void updateInventory(int number,int productId) throws SQLException {
+        Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/store", "root", "Mm1234!@#$");
+        PreparedStatement updateInventory = connection.prepareStatement("UPDATE goods SET number = ? WHERE id = ?");
+        updateInventory.setInt(1,number);
+        updateInventory.setInt(2,productId);
+        updateInventory.executeUpdate();
+        System.out.println("number of this product successfully increased");
     }
 }
