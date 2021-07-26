@@ -68,9 +68,10 @@ public class CustomerService {
             int userId = customerRepository.findUserId();
             boolean userIsVerify = customerRepository.checkVerify(userId);
             if(userIsVerify){
+                System.out.println("----- you logged in -----");
                 while(!backToMainMenu){
                     boolean inputMatches = false;
-                    System.out.println("----- you logged in -----");
+                    System.out.println("------------------------");
                     System.out.println("     1.charge account            balance = " + customerRepository.findCurrentBalance(customerRepository.findUserId()));
                     System.out.println("     2.see your cart     ");
                     System.out.println("     3.add to your cart  ");
@@ -207,13 +208,19 @@ public class CustomerService {
         int nextBalance = amount + currentBalance;
         customerRepository.updateUserBalance(nextBalance,userId);
     }
-    private static void seeYourCart() throws SQLException {
+    private static boolean seeYourCart() throws SQLException {
         ProductRepository productRepository = new ProductRepository();
         CustomerRepository customerRepository = new CustomerRepository();
         int userId = customerRepository.findUserId();
-        productRepository.findProductId(userId);
-        System.out.println("total = " + productRepository.total(userId));
-
+        boolean customerHasShoppped = customerRepository.checkCustomerCart(userId);
+        if(customerHasShoppped){
+            productRepository.findProductId(userId);
+            System.out.println("total = " + productRepository.total(userId));
+        }
+        else{
+            System.out.println("you haven't add anything to your cart");
+        }
+        return customerHasShoppped;
     }
     private static void addToCart() throws SQLException {
         boolean backToMainMenu = false;
@@ -279,43 +286,54 @@ public class CustomerService {
     }
     private static void deleteFromCart() throws SQLException {
         ProductRepository productRepository = new ProductRepository();
-        seeYourCart();
-        boolean backToMainMenu = false;
-        while(!backToMainMenu){
-            boolean inputMatch = false;
-            int choice = 0;
-            System.out.println("   1.delete from cart   ");
-            System.out.println("   2.back to main menu  ");
-            System.out.print(":");
-            while(!inputMatch){
-                try{
-                    choice = new Scanner(System.in).nextInt();
-                    while(choice < 1 || choice > 2){
-                        System.out.println("----- invalid choice -----");
-                        System.out.println("try again: ");
+        CustomerRepository customerRepository = new CustomerRepository();
+        int userId = customerRepository.findUserId();
+        boolean customerHasShoppped = customerRepository.checkCustomerCart(userId);
+        if(customerHasShoppped){
+            boolean backToMainMenu = false;
+            while(!backToMainMenu){
+                customerHasShoppped = customerRepository.checkCustomerCart(userId);
+                if(!customerHasShoppped){
+                    break;
+                }
+                productRepository.findProductId(userId);
+                boolean inputMatch = false;
+                int choice = 0;
+                System.out.println("   1.delete from cart   ");
+                System.out.println("   2.back to main menu  ");
+                System.out.print(":");
+                while(!inputMatch){
+                    try{
                         choice = new Scanner(System.in).nextInt();
+                        while(choice < 1 || choice > 2){
+                            System.out.println("----- invalid choice -----");
+                            System.out.println("try again: ");
+                            choice = new Scanner(System.in).nextInt();
+                        }
+                        inputMatch = true;
+                    }catch (InputMismatchException exception){
+                        System.out.println("you should enter a number");
+                        System.out.print("try again: ");
                     }
-                    inputMatch = true;
-                }catch (InputMismatchException exception){
-                    System.out.println("you should enter a number");
-                    System.out.print("try again: ");
+                }
+                if(choice == 1){
+                    System.out.println("----- product id -----");
+                    int productId = input.nextInt();
+                    boolean idIsCorrect = productRepository.checkProductId(productId);
+                    while(!idIsCorrect){
+                        System.out.println("----------- invalid id -----------");
+                        System.out.println("this id isn't one of your products");
+                        System.out.print("try again: ");
+                        productId = input.nextInt();
+                        idIsCorrect = productRepository.checkProductId(productId);
+                    }
+                    productRepository.deleteProduct(productId);
+                }else{
+                    break;
                 }
             }
-            if(choice == 1){
-                System.out.println("----- product id -----");
-                int productId = input.nextInt();
-                boolean idIsCorrect = productRepository.checkProductId(productId);
-                while(!idIsCorrect){
-                    System.out.println("----------- invalid id -----------");
-                    System.out.println("this id isn't one of your products");
-                    System.out.print("try again: ");
-                    productId = input.nextInt();
-                    idIsCorrect = productRepository.checkProductId(productId);
-                }
-                productRepository.deleteProduct(productId);
-            }else{
-                break;
-            }
+        }else{
+            System.out.println("you haven't add anything to your cart");
         }
     }
     private static void changePassword() throws SQLException {

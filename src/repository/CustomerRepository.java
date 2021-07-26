@@ -210,4 +210,14 @@ public class CustomerRepository {
         suspendPerson.executeUpdate();
         System.out.println("person successfully unsuspended");
     }
+    public boolean checkCustomerCart(int userId) throws SQLException {
+        boolean customerHasShopped = false;
+        Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/store", "root", "Mm1234!@#$");
+        Statement statement = connection.createStatement();
+        ResultSet resultSet = statement.executeQuery("SELECT * FROM customerbuygoods WHERE customerid = '" + userId + "'");
+        while(resultSet.next()){
+            customerHasShopped = true;
+        }
+        return customerHasShopped;
+    }
 }
