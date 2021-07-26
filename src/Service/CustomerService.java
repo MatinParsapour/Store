@@ -260,6 +260,8 @@ public class CustomerService {
         CustomerRepository customerRepository = new CustomerRepository();
         int userId = customerRepository.findUserId();
         productRepository.findProductId(userId);
+        System.out.println("total = " + productRepository.total(userId));
+
     }
     private static void addToCart() throws SQLException {
         boolean backToMainMenu = false;
