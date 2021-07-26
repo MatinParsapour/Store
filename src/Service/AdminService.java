@@ -1,5 +1,6 @@
 package Service;
 
+import entity.Admin;
 import repository.AdminRepository;
 
 import java.sql.SQLException;
@@ -19,6 +20,11 @@ public class AdminService {
                 System.out.println("-------- password --------");
                 String password = new Scanner(System.in).next();
                 boolean heIsAdmin = adminRepository.checkAdmin(username,password);
+                if(heIsAdmin){
+                    Admin.setUsername(username);
+                    adminMenu();
+                    break;
+                }
                 while(!heIsAdmin){
                     int logInFailed = 0;
                     System.out.println("❌❌❌❌❌ you are not admin ❌v❌❌❌");
@@ -50,48 +56,54 @@ public class AdminService {
                 System.out.println("you should write character");
                 System.out.println("try again: ");
             }
-            if(!backToMainMenu){
-                System.out.println("<><><><><> welcome <><><><><>");
-                int adminChoice = 0;
-                boolean inputIsIncorrect = true;
-                while(inputIsIncorrect){
-                    try{
-                        System.out.println("----------------------------------");
-                        System.out.println("          1.add a product         ");
-                        System.out.println("         2.delete a product       ");
-                        System.out.println("  3.increase number of a product  ");
-                        System.out.println("         4. verify a person       ");
-                        System.out.println("         5.suspend a person       ");
-                        System.out.println("        6.unsuspend a person      ");
-                        System.out.println("----------------------------------");
-                        System.out.println("choose : ");
+        }
+    }
+    private static void adminMenu(){
+        boolean mainMenu = false;
+        while(!mainMenu){
+            System.out.println("<><><><><> welcome <><><><><>");
+            int adminChoice = 0;
+            boolean inputIsIncorrect = true;
+            while(inputIsIncorrect){
+                try{
+                    System.out.println("----------------------------------");
+                    System.out.println("          1.add a product         ");
+                    System.out.println("         2.delete a product       ");
+                    System.out.println("  3.increase number of a product  ");
+                    System.out.println("         4. verify a person       ");
+                    System.out.println("         5.suspend a person       ");
+                    System.out.println("        6.unsuspend a person      ");
+                    System.out.println("             7.exit               ");
+                    System.out.println("----------------------------------");
+                    System.out.print("choose : ");
+                    adminChoice = new Scanner(System.in).nextInt();
+                    while(adminChoice < 1 || adminChoice > 7){
+                        System.out.println("you should choose between menu options");
+                        System.out.print("try again:");
                         adminChoice = new Scanner(System.in).nextInt();
-                        while(adminChoice < 1 || adminChoice > 6){
-                            System.out.println("you should choose between menu options");
-                            System.out.print("try again:");
-                            adminChoice = new Scanner(System.in).nextInt();
-                        }
-                        inputIsIncorrect = false;
-                    }catch (InputMismatchException exception){
-                        System.out.println("you should enter a number");
-                        System.out.print("try again : ");
                     }
+                    inputIsIncorrect = false;
+                }catch (InputMismatchException exception){
+                    System.out.println("you should enter a number");
+                    System.out.print("try again : ");
                 }
-                switch (adminChoice){
-                    case 1:
-                        break;
-                    case 2:
-                        break;
-                    case 3:
-                        break;
-                    case 4:
-                        break;
-                    case 5:
-                        break;
-                    case 6:
-                        backToMainMenu = true;
-                        break;
-                }
+            }
+            switch (adminChoice){
+                case 1:
+                    break;
+                case 2:
+                    break;
+                case 3:
+                    break;
+                case 4:
+                    break;
+                case 5:
+                    break;
+                case 6:
+                    break;
+                case 7:
+                    mainMenu = true;
+                    break;
             }
         }
     }

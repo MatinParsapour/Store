@@ -9,6 +9,7 @@ import java.util.Scanner;
 
 public class Store {
     public static void main(String[] args) throws SQLException {
+        AdminService adminService = new AdminService();
         CustomerService  customerService = new CustomerService();
         boolean exit = false;
         CreateTable createTable = new CreateTable();
@@ -18,17 +19,18 @@ public class Store {
         System.out.println("------ welcome to store ------");
         while(!exit){
             boolean inputIsCorrect = false;
-            System.out.println("           1.Log in           ");
-            System.out.println("           2.Sign up          ");
-            System.out.println("           3.View goods       ");
-            System.out.println("           4.Exit             ");
+            System.out.println("           1.Admin            ");
+            System.out.println("           2.Log in           ");
+            System.out.println("           3.Sign up          ");
+            System.out.println("           4.View goods       ");
+            System.out.println("           5.Exit             ");
             System.out.println("------------------------------");
             System.out.print("choose : ");
             int choice = 0;
             while(!inputIsCorrect){
                 try{
                     choice = new Scanner(System.in).nextInt();
-                    while(choice < 1 || choice > 4){
+                    while(choice < 1 || choice > 5){
                         System.out.println("------ Invalid choice -------");
                         System.out.println(" choose between menu options ");
                         choice = new Scanner(System.in).nextInt();
@@ -41,16 +43,19 @@ public class Store {
             }
             switch (choice){
                 case 1:
-                    customerService.logIn();
+                    adminService.adminLogIn();
                     break;
                 case 2:
-                    customerService.signUp();
+                    customerService.logIn();
                     break;
                 case 3:
+                    customerService.signUp();
+                    break;
+                case 4:
                     ProductRepository productRepository = new ProductRepository();
                     productRepository.findProducts();
                     break;
-                case 4:
+                case 5:
                     System.out.println("hope to see you soon");
                     exit = true;
                     break;
