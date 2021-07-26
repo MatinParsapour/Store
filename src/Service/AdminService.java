@@ -8,6 +8,8 @@ import repository.ProductRepository;
 import java.sql.SQLException;
 import java.util.InputMismatchException;
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class AdminService {
     public void adminLogIn() throws SQLException {
@@ -109,6 +111,9 @@ public class AdminService {
                     break;
                 case 6:
                     unSuspendPerson();
+                    break;
+                case 7:
+                    changePassword();
                     break;
                 case 9:
                     mainMenu = true;
@@ -308,5 +313,48 @@ public class AdminService {
                 System.out.println("try again : ");
             }
         }
+    }
+    private static void changePassword() throws SQLException {
+        AdminRepository adminRepository = new AdminRepository();
+        adminRepository.findAdminPassword();
+        boolean inputMatch = false;
+        int choice = 0;
+        while(!inputMatch){
+            try{
+                System.out.println("1.change password        2.back to menu");
+                System.out.print(":");
+                choice = new Scanner(System.in).nextInt();
+                while(choice < 1 || choice > 2){
+                    System.out.println("----- invalid choice -----");
+                    System.out.print("try again: ");
+                    choice = new Scanner(System.in).nextInt();
+                }
+                inputMatch = true;
+            }catch (InputMismatchException exception){
+                System.out.println("you should enter a number");
+                System.out.println("try again: ");
+            }
+        }
+        if(choice == 1){
+            int password = Integer.parseInt(password());
+            adminRepository.changeAdminPassword(password);
+        }else{
+            System.out.println("you password didn't change");
+        }
+    }
+    private static String password(){
+        Scanner input = new Scanner(System.in);
+        String validPassword = "[0-9]{10}";
+        Pattern pattern = Pattern.compile(validPassword);
+        System.out.println("------ password ------");
+        String password = input.next();
+        Matcher matcher = pattern.matcher(password);
+        while(!matcher.matches()){
+            System.out.println("you should write a 10-digit password");
+            System.out.print("try again: ");
+            password = input.next();
+            matcher = pattern.matcher(password);
+        }
+        return password;
     }
 }
