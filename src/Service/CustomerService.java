@@ -127,71 +127,14 @@ public class CustomerService {
         }
     }
     public void signUp() throws SQLException {
+        CustomerService customerService = new CustomerService();
         CustomerRepository customerRepository = new CustomerRepository();
         System.out.println("<><><><><><> sign up <><><><><><>");
         Customer.setName(CustomerService.name());
         Customer.setUsername(CustomerService.username());
         Customer.setPassword(CustomerService.password());
         customerRepository.insertCustomer();
-        boolean backToMainMenu = false;
-        while(!backToMainMenu){
-            boolean inputMatches = false;
-            System.out.println("----- you logged in -----");
-            System.out.println("     1.charge account          balance = " + customerRepository.findCurrentBalance(customerRepository.findUserId()));
-            System.out.println("     2.see your cart     ");
-            System.out.println("     3.add to your cart  ");
-            System.out.println("  4.delete from you cart ");
-            System.out.println("    5.change password    ");
-            System.out.println("    6.change username    ");
-            System.out.println("      7.view products    ");
-            System.out.println("         9.exit          ");
-            System.out.println("-------------------------");
-            System.out.print("choose: ");
-            int logInChoice = 0;
-            while(!inputMatches){
-                try{
-                    logInChoice = input.nextInt();
-                    while(logInChoice < 1 || logInChoice > 9){
-                        System.out.println("----- invalid choice -----");
-                        System.out.print("try again : ");
-                        logInChoice = input.nextInt();
-                    }
-                    inputMatches = true;
-                }catch (InputMismatchException exception){
-                    System.out.println("you should enter a number");
-                    System.out.print("try again: ");
-                }
-            }
-            switch (logInChoice){
-                case 1:
-                    chargeAccount();
-                    break;
-                case 2:
-                    seeYourCart();
-                    break;
-                case 3:
-                    addToCart();
-                    break;
-                case 4:
-                    deleteFromCart();
-                    break;
-                case 5:
-                    changePassword();
-                    break;
-                case 6:
-                    changeUsername();
-                    break;
-                case 7:
-                    viewProducts();
-                    break;
-                case 8:
-                    finalPurchase();
-                    break;
-                case 9:
-                    backToMainMenu = true;
-                    break;
-            }
-        }
+        customerService.logIn();
     }
     private static String name(){
         String name = null;
