@@ -108,4 +108,16 @@ public class CustomerRepository {
         }
         return cartChecked;
     }
+    public boolean checkVerify(int userId) throws SQLException {
+        boolean userIsVerify = false;
+        Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/store", "root", "Mm1234!@#$");
+        Statement statement = connection.createStatement();
+        ResultSet resultSet = statement.executeQuery("SELECT verify FROM customer WHERE id = '" + userId + "'");
+        while(resultSet.next()){
+            if(resultSet.getInt("verify") == 1){
+                userIsVerify = true;
+            }
+        }
+        return userIsVerify;
+    }
 }

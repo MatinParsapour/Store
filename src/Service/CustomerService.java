@@ -65,64 +65,73 @@ public class CustomerService {
                     System.out.println("try again: ");
                 }
             }
-            while(!backToMainMenu){
-                boolean inputMatches = false;
-                System.out.println("----- you logged in -----");
-                System.out.println("     1.charge account            balance = " + customerRepository.findCurrentBalance(customerRepository.findUserId()));
-                System.out.println("     2.see your cart     ");
-                System.out.println("     3.add to your cart  ");
-                System.out.println("  4.delete from you cart ");
-                System.out.println("    5.change password    ");
-                System.out.println("    6.change username    ");
-                System.out.println("      7.view products    ");
-                System.out.println("      8.final purchase   ");
-                System.out.println("         9.exit          ");
-                System.out.println("-------------------------");
-                System.out.print("choose: ");
-                int logInChoice = 0;
-                while(!inputMatches){
-                    try{
-                        logInChoice = input.nextInt();
-                        while(logInChoice < 1 || logInChoice > 9){
-                            System.out.println("----- invalid choice -----");
-                            System.out.print("try again : ");
+            int userId = customerRepository.findUserId();
+            boolean userIsVerify = customerRepository.checkVerify(userId);
+            if(userIsVerify){
+                while(!backToMainMenu){
+                    boolean inputMatches = false;
+                    System.out.println("----- you logged in -----");
+                    System.out.println("     1.charge account            balance = " + customerRepository.findCurrentBalance(customerRepository.findUserId()));
+                    System.out.println("     2.see your cart     ");
+                    System.out.println("     3.add to your cart  ");
+                    System.out.println("  4.delete from you cart ");
+                    System.out.println("    5.change password    ");
+                    System.out.println("    6.change username    ");
+                    System.out.println("      7.view products    ");
+                    System.out.println("      8.final purchase   ");
+                    System.out.println("         9.exit          ");
+                    System.out.println("-------------------------");
+                    System.out.print("choose: ");
+                    int logInChoice = 0;
+                    while(!inputMatches){
+                        try{
                             logInChoice = input.nextInt();
+                            while(logInChoice < 1 || logInChoice > 9){
+                                System.out.println("----- invalid choice -----");
+                                System.out.print("try again : ");
+                                logInChoice = input.nextInt();
+                            }
+                            inputMatches = true;
+                        }catch (InputMismatchException exception){
+                            System.out.println("you should enter a number");
+                            System.out.print("try again: ");
                         }
-                        inputMatches = true;
-                    }catch (InputMismatchException exception){
-                        System.out.println("you should enter a number");
-                        System.out.print("try again: ");
+                    }
+                    switch (logInChoice){
+                        case 1:
+                            chargeAccount();
+                            break;
+                        case 2:
+                            seeYourCart();
+                            break;
+                        case 3:
+                            addToCart();
+                            break;
+                        case 4:
+                            deleteFromCart();
+                            break;
+                        case 5:
+                            changePassword();
+                            break;
+                        case 6:
+                            changeUsername();
+                            break;
+                        case 7:
+                            viewProducts();
+                            break;
+                        case 8:
+                            finalPurchase();
+                            break;
+                        case 9:
+                            backToMainMenu = true;
+                            break;
                     }
                 }
-                switch (logInChoice){
-                    case 1:
-                        chargeAccount();
-                        break;
-                    case 2:
-                        seeYourCart();
-                        break;
-                    case 3:
-                        addToCart();
-                        break;
-                    case 4:
-                        deleteFromCart();
-                        break;
-                    case 5:
-                        changePassword();
-                        break;
-                    case 6:
-                        changeUsername();
-                        break;
-                    case 7:
-                        viewProducts();
-                        break;
-                    case 8:
-                        finalPurchase();
-                        break;
-                    case 9:
-                        backToMainMenu = true;
-                        break;
-                }
+            }
+            else{
+                System.out.println("you are not allowed to do anything");
+                System.out.println("please wait till admin respond");
+                backToMainMenu = true;
             }
         }
     }
