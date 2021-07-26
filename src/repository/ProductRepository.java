@@ -140,5 +140,33 @@ public class ProductRepository {
         }
         return cost;
     }
-
+    public void insertToGoods() throws SQLException {
+        Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/store", "root", "Mm1234!@#$");
+        PreparedStatement insertToGoods = connection.prepareStatement("INSERT INTO goods(name,category,subcategory,cost,number)VALUES(?,?,?,?,?)");
+        insertToGoods.setString(1,Goods.getName());
+        insertToGoods.setString(2,Goods.getCategory());
+        insertToGoods.setString(3,Goods.getSubcategory());
+        insertToGoods.setInt(4,Goods.getCost());
+        insertToGoods.setInt(5,Goods.getNumber());
+        insertToGoods.executeUpdate();
+        System.out.println("the product successfully added to inventory");
+    }
+    public void productCategory() throws SQLException {
+        Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/store", "root", "Mm1234!@#$");
+        Statement statement = connection.createStatement();
+        ResultSet resultSet = statement.executeQuery("SELECT category FROM goods GROUP BY category");
+        while(resultSet.next()){
+            System.out.println("name : "  + resultSet.getString("category"));
+        }
+    }
+    public boolean checkCategory(String category) throws SQLException {
+        boolean categoryExists = false;
+        Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/store", "root", "Mm1234!@#$");
+        Statement statement = connection.createStatement();
+        ResultSet resultSet = statement.executeQuery("SELECT * FROM goods WHERE category = '" + category + "'");
+        while(resultSet.next()){
+            categoryExists = true;
+        }
+        return categoryExists;
+    }
 }
