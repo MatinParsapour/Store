@@ -180,4 +180,34 @@ public class CustomerRepository {
         suspendPerson.executeUpdate();
         System.out.println("person successfully suspended");
     }
+    public void findSuspendedPeople() throws SQLException {
+        Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/store", "root", "Mm1234!@#$");
+        Statement statement = connection.createStatement();
+        ResultSet resultSet = statement.executeQuery("SELECT * FROM customer WHERE verify = 2 AND id > 1");
+        while(resultSet.next()){
+            System.out.println("id : " + resultSet.getInt("id"));
+            System.out.println("name : " + resultSet.getString("name"));
+            System.out.println("username : " + resultSet.getString("username"));
+            System.out.println("status : " + resultSet.getInt("verify"));
+        }
+    }
+    public boolean checkCustomerStatusForUnSuspend(int customerId) throws SQLException {
+        boolean canVerify = false;
+        Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/store", "root", "Mm1234!@#$");
+        Statement statement = connection.createStatement();
+        ResultSet resultSet = statement.executeQuery("SELECT verify FROM customer WHERE id = '" + customerId + "'");
+        while(resultSet.next()){
+            if(resultSet.getInt("verify") == 2){
+                canVerify = true;
+            }
+        }
+        return canVerify;
+    }
+    public void unSuspendPerson(int customerId) throws SQLException {
+        Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/store", "root", "Mm1234!@#$");
+        PreparedStatement suspendPerson = connection.prepareStatement("UPDATE customer SET verify = 1 WHERE id = ? ");
+        suspendPerson.setInt(1,customerId);
+        suspendPerson.executeUpdate();
+        System.out.println("person successfully unsuspended");
+    }
 }
