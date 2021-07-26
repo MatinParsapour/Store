@@ -341,7 +341,7 @@ public class CustomerService {
         }
         if(choice == 1){
             System.out.println("----- new password -----");
-            int password = input.nextInt();
+            int password = Integer.parseInt(password());
             customerRepository.changePassword(password);
         }else{
             System.out.println("you password didn't change");

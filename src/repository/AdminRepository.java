@@ -30,4 +30,19 @@ public class AdminRepository {
         changePassword.executeUpdate();
         System.out.println("your password successfully changed");
     }
+    public void findAdminUsername() throws SQLException {
+        Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/store", "root", "Mm1234!@#$");
+        Statement statement = connection.createStatement();
+        ResultSet resultSet = statement.executeQuery("SELECT * FROM customer WHERE id = 1 ");
+        while(resultSet.next()){
+            System.out.println("your username : " + resultSet.getString("username"));
+        }
+    }
+    public void changeAdminUsername(String username) throws SQLException {
+        Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/store", "root", "Mm1234!@#$");
+        PreparedStatement changeUsername = connection.prepareStatement("UPDATE customer SET username = ? WHERE id = 1");
+        changeUsername.setString(1,username);
+        changeUsername.executeUpdate();
+        System.out.println("your username successfully changed");
+    }
 }

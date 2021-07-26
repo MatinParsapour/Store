@@ -1,6 +1,7 @@
 package Service;
 
 import entity.Admin;
+import entity.Customer;
 import repository.AdminRepository;
 import repository.CustomerRepository;
 import repository.ProductRepository;
@@ -77,7 +78,7 @@ public class AdminService {
                     System.out.println("         5.suspend a person       ");
                     System.out.println("        6.unsuspend a person      ");
                     System.out.println("         7.change password        ");
-                    System.out.println("         8.change usernaem        ");
+                    System.out.println("         8.change username        ");
                     System.out.println("             9.exit               ");
                     System.out.println("----------------------------------");
                     System.out.print("choose : ");
@@ -114,6 +115,9 @@ public class AdminService {
                     break;
                 case 7:
                     changePassword();
+                    break;
+                case 8:
+                    changeUsername();
                     break;
                 case 9:
                     mainMenu = true;
@@ -356,5 +360,43 @@ public class AdminService {
             matcher = pattern.matcher(password);
         }
         return password;
+    }
+    private static void changeUsername() throws SQLException {
+        CustomerRepository customerRepository = new CustomerRepository();
+        AdminRepository adminRepository = new AdminRepository();
+        adminRepository.findAdminUsername();
+        boolean inputMatch = false;
+        int choice = 0;
+        while(!inputMatch){
+            try{
+                System.out.println("1.change username        2.back to menu");
+                System.out.print(":");
+                choice = new Scanner(System.in).nextInt();
+                while(choice < 1 || choice > 2){
+                    System.out.println("----- invalid choice -----");
+                    System.out.print("try again: ");
+                    choice = new Scanner(System.in).nextInt();
+                }
+                inputMatch = true;
+            }catch (InputMismatchException exception){
+                System.out.println("you should enter a number");
+                System.out.println("try again: ");
+            }
+        }
+        if(choice == 1){
+            System.out.println("----- new username -----");
+            String username = new Scanner(System.in).next();
+            boolean usernameAccepted = customerRepository.checkUsername(username);
+            while(usernameAccepted){
+                System.out.println("----- invalid username ------");
+                System.out.println("there is a username like this");
+                System.out.print("try again: ");
+                username = new Scanner(System.in).next();
+                usernameAccepted = customerRepository.checkUsername(username);
+            }
+            adminRepository.changeAdminUsername(username);
+        }else{
+            System.out.println("you username didn't change");
+        }
     }
 }
