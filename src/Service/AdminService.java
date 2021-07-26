@@ -74,11 +74,13 @@ public class AdminService {
                     System.out.println("         4. verify a person       ");
                     System.out.println("         5.suspend a person       ");
                     System.out.println("        6.unsuspend a person      ");
-                    System.out.println("             7.exit               ");
+                    System.out.println("         7.change password        ");
+                    System.out.println("         8.change usernaem        ");
+                    System.out.println("             9.exit               ");
                     System.out.println("----------------------------------");
                     System.out.print("choose : ");
                     adminChoice = new Scanner(System.in).nextInt();
-                    while(adminChoice < 1 || adminChoice > 7){
+                    while(adminChoice < 1 || adminChoice > 9){
                         System.out.println("you should choose between menu options");
                         System.out.print("try again:");
                         adminChoice = new Scanner(System.in).nextInt();
@@ -108,7 +110,7 @@ public class AdminService {
                 case 6:
                     unSuspendPerson();
                     break;
-                case 7:
+                case 9:
                     mainMenu = true;
                     break;
             }
