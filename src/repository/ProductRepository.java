@@ -193,6 +193,6 @@ public class ProductRepository {
         updateInventory.setInt(1,number);
         updateInventory.setInt(2,productId);
         updateInventory.executeUpdate();
-        System.out.println("number of this product successfully increased");
+        System.out.println("number of this product successfully changed");
     }
 }

@@ -74,16 +74,17 @@ public class AdminService {
                     System.out.println("          1.add a product         ");
                     System.out.println("         2.delete a product       ");
                     System.out.println("  3.increase number of a product  ");
-                    System.out.println("         4. verify a person       ");
-                    System.out.println("         5.suspend a person       ");
-                    System.out.println("        6.unsuspend a person      ");
-                    System.out.println("         7.change password        ");
-                    System.out.println("         8.change username        ");
-                    System.out.println("             9.exit               ");
+                    System.out.println("  4.decrease number of a product  ");
+                    System.out.println("         5. verify a person       ");
+                    System.out.println("         6.suspend a person       ");
+                    System.out.println("        7.unsuspend a person      ");
+                    System.out.println("         8.change password        ");
+                    System.out.println("         9.change username        ");
+                    System.out.println("             10.exit               ");
                     System.out.println("----------------------------------");
                     System.out.print("choose : ");
                     adminChoice = new Scanner(System.in).nextInt();
-                    while(adminChoice < 1 || adminChoice > 9){
+                    while(adminChoice < 1 || adminChoice > 10){
                         System.out.println("you should choose between menu options");
                         System.out.print("try again:");
                         adminChoice = new Scanner(System.in).nextInt();
@@ -105,21 +106,24 @@ public class AdminService {
                     increaseInventory();
                     break;
                 case 4:
-                    verifyPerson();
+                    decreaseInvenroy();
                     break;
                 case 5:
-                    suspendPerson();
+                    verifyPerson();
                     break;
                 case 6:
-                    unSuspendPerson();
+                    suspendPerson();
                     break;
                 case 7:
-                    changePassword();
+                    unSuspendPerson();
                     break;
                 case 8:
-                    changeUsername();
+                    changePassword();
                     break;
                 case 9:
+                    changeUsername();
+                    break;
+                case 10:
                     mainMenu = true;
                     break;
             }
@@ -189,6 +193,30 @@ public class AdminService {
                 }
                 if(choice == 1){
                     productService.increaseInventory();
+                }else{
+                    break;
+                }
+            }catch (InputMismatchException exception){
+                System.out.println("you should enter a number");
+                System.out.println("try again: ");
+            }
+        }
+    }
+    private static void decreaseInvenroy() throws SQLException {
+        ProductRepository productRepository = new ProductRepository();
+        ProductService productService = new ProductService();
+        productRepository.findProducts();
+        while(true){
+            try{
+                System.out.println("do you want to increase inventory? 1.yes  2.no");
+                int choice = new Scanner(System.in).nextInt();
+                while(choice < 1 || choice > 2){
+                    System.out.println("you should choose between menu options");
+                    System.out.print("try again: ");
+                    choice = new Scanner(System.in).nextInt();
+                }
+                if(choice == 1){
+                    productService.decreaseInventroy();
                 }else{
                     break;
                 }
