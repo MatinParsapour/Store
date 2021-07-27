@@ -281,11 +281,11 @@ public class AdminService {
                 if(choice == 1){
                     System.out.println("------ customer id ------");
                     int customerId = new Scanner(System.in).nextInt();
-                    boolean canVerify = customerRepository.checkCustomerStatusForSuspend(customerId);
-                    if(canVerify){
+                    boolean canSuspend = customerRepository.checkCustomerStatusForSuspend(customerId);
+                    if(canSuspend){
                         customerRepository.suspendPerson(customerId);
                     }else{
-                        System.out.println("this id is not available to verify");
+                        System.out.println("this id is not available to suspend");
                         System.out.println("1.try again         2.back to menu");
                         int idIsIncorrect = new Scanner(System.in).nextInt();
                         while (idIsIncorrect < 1 || idIsIncorrect > 2){
@@ -321,11 +321,11 @@ public class AdminService {
                 if(choice == 1){
                     System.out.println("------ customer id ------");
                     int customerId = new Scanner(System.in).nextInt();
-                    boolean canVerify = customerRepository.checkCustomerStatusForUnSuspend(customerId);
-                    if(canVerify){
+                    boolean canUnSuspend = customerRepository.checkCustomerStatusForUnSuspend(customerId);
+                    if(canUnSuspend){
                         customerRepository.unSuspendPerson(customerId);
                     }else{
-                        System.out.println("this id is not available to verify");
+                        System.out.println("this id is not available to unsuspend");
                         System.out.println("1.try again         2.back to menu");
                         int idIsIncorrect = new Scanner(System.in).nextInt();
                         while (idIsIncorrect < 1 || idIsIncorrect > 2){
@@ -368,7 +368,7 @@ public class AdminService {
             }
         }
         if(choice == 1){
-            int password = Integer.parseInt(password());
+            String password = password();
             adminRepository.changeAdminPassword(password);
         }else{
             System.out.println("you password didn't change");

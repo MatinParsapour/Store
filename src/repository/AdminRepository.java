@@ -23,10 +23,10 @@ public class AdminRepository {
             System.out.println("your password : " + resultSet.getInt("password"));
         }
     }
-    public void changeAdminPassword(int password) throws SQLException {
+    public void changeAdminPassword(String password) throws SQLException {
         Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/store", "root", "Mm1234!@#$");
         PreparedStatement changePassword = connection.prepareStatement("UPDATE customer SET password = ? WHERE id = 1");
-        changePassword.setInt(1,password);
+        changePassword.setString(1,password);
         changePassword.executeUpdate();
         System.out.println("your password successfully changed");
     }

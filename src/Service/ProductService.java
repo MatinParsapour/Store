@@ -99,6 +99,7 @@ public class ProductService {
                         System.out.print("try again : ");
                     }
                 }
+                inputMatch = true;
             }catch (InputMismatchException exception){
                 System.out.println("you should enter character");
                 System.out.print("try again: ");
@@ -111,9 +112,9 @@ public class ProductService {
         boolean inputMatch = false;
         while(!inputMatch){
             try{
-                System.out.println("----- product name -----");
+                System.out.println("----- subcategory name -----");
                 subCategory = new Scanner(System.in).nextLine();
-                System.out.println("is this name an acceptable name?");
+                System.out.println("is this name an acceptable subcategory name?");
                 System.out.println("1.yes                       2.no");
                 int accept = new Scanner(System.in).nextInt();
                 while(accept < 1 || accept > 2){
@@ -136,9 +137,9 @@ public class ProductService {
         boolean inputMatch = false;
         while(!inputMatch){
             try{
-                System.out.println("----- product name -----");
+                System.out.println("----- cost -----");
                 Cost = new Scanner(System.in).nextInt();
-                System.out.println("is this name an acceptable name?");
+                System.out.println("is this name an acceptable cost?");
                 System.out.println("1.yes                       2.no");
                 int accept = new Scanner(System.in).nextInt();
                 while(accept < 1 || accept > 2){
@@ -161,9 +162,9 @@ public class ProductService {
         boolean inputMatch = false;
         while(!inputMatch){
             try{
-                System.out.println("----- product name -----");
+                System.out.println("----- number -----");
                 number = new Scanner(System.in).nextInt();
-                System.out.println("is this name an acceptable name?");
+                System.out.println("is this name an acceptable number?");
                 System.out.println("1.yes                       2.no");
                 int accept = new Scanner(System.in).nextInt();
                 while(accept < 1 || accept > 2){

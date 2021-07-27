@@ -413,71 +413,76 @@ public class CustomerService {
         CustomerRepository customerRepository = new CustomerRepository();
         ProductRepository productRepository = new ProductRepository();
         int userId = customerRepository.findUserId();
-        int balance = customerRepository.findCurrentBalance(userId);
-        int total = productRepository.total(userId);
-        System.out.println("total = " + total);
-        System.out.println("do you want to purchase?");
-        System.out.println("1.Yes               2.NO");
-        System.out.println(":");
-        boolean inputMatch = false;
-        int choice = 0;
-        while(!inputMatch){
-            try{
-                choice = new Scanner(System.in).nextInt();
-                while(choice < 1 || choice > 2){
-                    System.out.println("you should choose between menu options");
-                    System.out.println("try again: ");
+        boolean customerHasShoppped = customerRepository.checkCustomerCart(userId);
+        if(customerHasShoppped){
+            int balance = customerRepository.findCurrentBalance(userId);
+            int total = productRepository.total(userId);
+            System.out.println("total = " + total);
+            System.out.println("do you want to purchase?");
+            System.out.println("1.Yes               2.NO");
+            System.out.println(":");
+            boolean inputMatch = false;
+            int choice = 0;
+            while(!inputMatch){
+                try{
                     choice = new Scanner(System.in).nextInt();
+                    while(choice < 1 || choice > 2){
+                        System.out.println("you should choose between menu options");
+                        System.out.println("try again: ");
+                        choice = new Scanner(System.in).nextInt();
+                    }
+                    inputMatch = true;
+                }catch (InputMismatchException exception){
+                    System.out.println("you should enter a number");
+                    System.out.print("try again: ");
                 }
-                inputMatch = true;
-            }catch (InputMismatchException exception){
-                System.out.println("you should enter a number");
-                System.out.print("try again: ");
             }
-        }
-        if(choice == 1){
-            boolean checkCart = customerRepository.checkCart(userId);
-            if(checkCart){
-                if(balance > total){
-                    int nextBalance = balance - total;
-                    customerRepository.updateUserBalance(nextBalance,userId);
-                    customerRepository.clearCart(userId);
-                }else{
-                    System.out.println("your balance is not enough");
-                    System.out.println("     1.charge account     ");
-                    System.out.println("    2.delete from cart    ");
-                    System.out.println("     3.back to menu       ");
-                    boolean inputMatches = false;
-                    int yourChoice = 0;
-                    while(!inputMatches){
-                        try{
-                            yourChoice = new Scanner(System.in).nextInt();
-                            while(choice < 1 || choice > 2){
-                                System.out.println("----- invalid choice -----");
-                                System.out.print("try again: ");
+            if(choice == 1){
+                boolean checkCart = customerRepository.checkCart(userId);
+                if(checkCart){
+                    if(balance > total){
+                        int nextBalance = balance - total;
+                        customerRepository.updateUserBalance(nextBalance,userId);
+                        customerRepository.clearCart(userId);
+                    }else{
+                        System.out.println("your balance is not enough");
+                        System.out.println("     1.charge account     ");
+                        System.out.println("    2.delete from cart    ");
+                        System.out.println("     3.back to menu       ");
+                        boolean inputMatches = false;
+                        int yourChoice = 0;
+                        while(!inputMatches){
+                            try{
                                 yourChoice = new Scanner(System.in).nextInt();
+                                while(choice < 1 || choice > 2){
+                                    System.out.println("----- invalid choice -----");
+                                    System.out.print("try again: ");
+                                    yourChoice = new Scanner(System.in).nextInt();
+                                }
+                                inputMatches = true;
+                            }catch (InputMismatchException exception){
+                                System.out.println("you should enter a number");
+                                System.out.print("try again: ");
                             }
-                            inputMatches = true;
-                        }catch (InputMismatchException exception){
-                            System.out.println("you should enter a number");
-                            System.out.print("try again: ");
+                        }
+                        switch (yourChoice){
+                            case 1:
+                                chargeAccount();
+                                break;
+                            case 2:
+                                deleteFromCart();
+                                break;
+                            case 3:
+                                break;
                         }
                     }
-                    switch (yourChoice){
-                        case 1:
-                            chargeAccount();
-                            break;
-                        case 2:
-                            deleteFromCart();
-                            break;
-                        case 3:
-                            break;
-                    }
+                }
+                else{
+                    System.out.println("you haven't add anything to your cart");
                 }
             }
-            else{
-                System.out.println("you haven't add anything to your cart");
-            }
+        }else{
+            System.out.println("you haven't add anything to your cart");
         }
     }
 }
