@@ -253,6 +253,7 @@ public class ProductService {
                     int numberOfProduct = productRepository.findNumberOfProduct(productId);
                     System.out.println("number : " + numberOfProduct);
                     System.out.println("----- amount -----");
+                    System.out.println("This number will be added to the current inventory");
                     int amount = new Scanner(System.in).nextInt();
                     int inventory = numberOfProduct + amount;
                     productRepository.updateInventory(inventory,productId);
