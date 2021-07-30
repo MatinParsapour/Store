@@ -5,9 +5,13 @@ import entity.Customer;
 import java.sql.*;
 
 public class CustomerRepository {
+    private Connection connection;
+
+    public CustomerRepository(Connection connection){
+        this.connection = connection;
+    }
     public boolean checkUsernameAndPassword(String username, String password) throws SQLException {
         boolean usernameIsOk = false;
-        Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/store", "root", "Mm1234!@#$");
         Statement statement = connection.createStatement();
         ResultSet resultSet = statement.executeQuery("SELECT * FROM customer");
         while(resultSet.next()){
@@ -19,7 +23,6 @@ public class CustomerRepository {
     }
     public boolean checkUsername(String username) throws SQLException {
         boolean exists = false;
-        Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/store", "root", "Mm1234!@#$");
         Statement statement = connection.createStatement();
         ResultSet resultSet = statement.executeQuery("SELECT * FROM customer WHERE username = '" + username + "'");
         while(resultSet.next()){
@@ -28,7 +31,6 @@ public class CustomerRepository {
         return  exists;
     }
     public void insertCustomer() throws SQLException {
-        Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/store", "root", "Mm1234!@#$");
         PreparedStatement insertCustomer = connection.prepareStatement("INSERT INTO customer (name,username,password) VALUES (?,?,?)");
         insertCustomer.setString(1, Customer.getName());
         insertCustomer.setString(2,Customer.getUsername());
@@ -38,7 +40,6 @@ public class CustomerRepository {
     }
     public int findUserId() throws SQLException {
         int userId = 0;
-        Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/store", "root", "Mm1234!@#$");
         Statement statement = connection.createStatement();
         ResultSet resultSet = statement.executeQuery("SELECT id FROM customer WHERE username = '" + Customer.getUsername() + "'");
         while(resultSet.next()){
@@ -48,7 +49,6 @@ public class CustomerRepository {
     }
     public int findCurrentBalance(int userId) throws SQLException {
         int currentBalance = 0;
-        Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/store", "root", "Mm1234!@#$");
         Statement statement = connection.createStatement();
         ResultSet resultSet = statement.executeQuery("SELECT balance FROM customer WHERE id = '" + userId + "'");
         while(resultSet.next()){
@@ -57,7 +57,6 @@ public class CustomerRepository {
         return currentBalance;
     }
     public void updateUserBalance(int amount, int userId) throws SQLException {
-        Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/store", "root", "Mm1234!@#$");
         PreparedStatement updateUserBalance = connection.prepareStatement("UPDATE customer SET balance = ? WHERE id = ?");
         updateUserBalance.setInt(1,amount);
         updateUserBalance.setInt(2,userId);
@@ -66,7 +65,6 @@ public class CustomerRepository {
     }
     public void findPassword() throws SQLException {
         int userId = findUserId();
-        Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/store", "root", "Mm1234!@#$");
         Statement statement = connection.createStatement();
         ResultSet resultSet = statement.executeQuery("SELECT * FROM customer WHERE id = '" + userId + "'");
         while(resultSet.next()){
@@ -74,7 +72,6 @@ public class CustomerRepository {
         }
     }
     public void changePassword(int password) throws SQLException {
-        Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/store", "root", "Mm1234!@#$");
         int userId = findUserId();
         PreparedStatement changePassword = connection.prepareStatement("UPDATE customer SET password = ? WHERE id = ?");
         changePassword.setInt(1,password);
@@ -83,7 +80,6 @@ public class CustomerRepository {
         System.out.println("your password changed");
     }
     public void changeUsername(int userId) throws SQLException {
-        Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/store", "root", "Mm1234!@#$");
         PreparedStatement changeUsername = connection.prepareStatement("UPDATE customer SET username = ? WHERE id = ?");
         changeUsername.setString(1,Customer.getUsername());
         changeUsername.setInt(2,userId);
@@ -91,7 +87,6 @@ public class CustomerRepository {
         System.out.println("your username changed");
     }
     public void clearCart(int userId) throws SQLException {
-        Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/store", "root", "Mm1234!@#$");
         PreparedStatement clearCart = connection.prepareStatement("DELETE FROM customerbuygoods WHERE customerid = ?");
         clearCart.setInt(1,userId);
         clearCart.executeUpdate();
@@ -99,7 +94,6 @@ public class CustomerRepository {
     }
     public boolean checkCart(int userId) throws SQLException {
         boolean cartChecked = false;
-        Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/store", "root", "Mm1234!@#$");
         Statement statement = connection.createStatement();
         ResultSet resultSet = statement.executeQuery("SELECT customerid FROM customerbuygoods WHERE customerid = '" + userId + "'");
         while(resultSet.next()){
@@ -110,7 +104,6 @@ public class CustomerRepository {
     }
     public boolean checkVerify(int userId) throws SQLException {
         boolean userIsVerify = false;
-        Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/store", "root", "Mm1234!@#$");
         Statement statement = connection.createStatement();
         ResultSet resultSet = statement.executeQuery("SELECT verify FROM customer WHERE id = '" + userId + "'");
         while(resultSet.next()){
@@ -121,7 +114,6 @@ public class CustomerRepository {
         return userIsVerify;
     }
     public void findUnverifiedPeople() throws SQLException {
-        Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/store", "root", "Mm1234!@#$");
         Statement statement = connection.createStatement();
         ResultSet resultSet = statement.executeQuery("SELECT * FROM customer WHERE verify = 0 ");
         while(resultSet.next()){
@@ -133,7 +125,6 @@ public class CustomerRepository {
     }
     public boolean checkCustomerStatusForVerify(int customerId) throws SQLException {
         boolean canVerify = false;
-        Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/store", "root", "Mm1234!@#$");
         Statement statement = connection.createStatement();
         ResultSet resultSet = statement.executeQuery("SELECT verify FROM customer WHERE id = '" + customerId + "'");
         while(resultSet.next()){
@@ -144,14 +135,12 @@ public class CustomerRepository {
         return canVerify;
     }
     public void verifyPerson(int customerId) throws SQLException {
-        Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/store", "root", "Mm1234!@#$");
         PreparedStatement verifyPerson = connection.prepareStatement("UPDATE customer SET verify = 1 WHERE id = ?");
         verifyPerson.setInt(1,customerId);
         verifyPerson.executeUpdate();
         System.out.println("the customer successfully verified");
     }
     public void findVerifiedPeople() throws SQLException {
-        Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/store", "root", "Mm1234!@#$");
         Statement statement = connection.createStatement();
         ResultSet resultSet = statement.executeQuery("SELECT * FROM customer WHERE verify = 1 AND id > 1");
         while(resultSet.next()){
@@ -163,7 +152,6 @@ public class CustomerRepository {
     }
     public boolean checkCustomerStatusForSuspend(int customerId) throws SQLException {
         boolean canVerify = false;
-        Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/store", "root", "Mm1234!@#$");
         Statement statement = connection.createStatement();
         ResultSet resultSet = statement.executeQuery("SELECT verify FROM customer WHERE id = '" + customerId + "'");
         while(resultSet.next()){
@@ -174,14 +162,12 @@ public class CustomerRepository {
         return canVerify;
     }
     public void suspendPerson(int customerId) throws SQLException {
-        Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/store", "root", "Mm1234!@#$");
         PreparedStatement suspendPerson = connection.prepareStatement("UPDATE customer SET verify = 2 WHERE id = ? ");
         suspendPerson.setInt(1,customerId);
         suspendPerson.executeUpdate();
         System.out.println("person successfully suspended");
     }
     public void findSuspendedPeople() throws SQLException {
-        Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/store", "root", "Mm1234!@#$");
         Statement statement = connection.createStatement();
         ResultSet resultSet = statement.executeQuery("SELECT * FROM customer WHERE verify = 2 AND id > 1");
         while(resultSet.next()){
@@ -193,7 +179,6 @@ public class CustomerRepository {
     }
     public boolean checkCustomerStatusForUnSuspend(int customerId) throws SQLException {
         boolean canVerify = false;
-        Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/store", "root", "Mm1234!@#$");
         Statement statement = connection.createStatement();
         ResultSet resultSet = statement.executeQuery("SELECT verify FROM customer WHERE id = '" + customerId + "'");
         while(resultSet.next()){
@@ -204,7 +189,6 @@ public class CustomerRepository {
         return canVerify;
     }
     public void unSuspendPerson(int customerId) throws SQLException {
-        Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/store", "root", "Mm1234!@#$");
         PreparedStatement suspendPerson = connection.prepareStatement("UPDATE customer SET verify = 1 WHERE id = ? ");
         suspendPerson.setInt(1,customerId);
         suspendPerson.executeUpdate();
@@ -212,7 +196,6 @@ public class CustomerRepository {
     }
     public boolean checkCustomerCart(int userId) throws SQLException {
         boolean customerHasShopped = false;
-        Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/store", "root", "Mm1234!@#$");
         Statement statement = connection.createStatement();
         ResultSet resultSet = statement.executeQuery("SELECT * FROM customerbuygoods WHERE customerid = '" + userId + "'");
         while(resultSet.next()){

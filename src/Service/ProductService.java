@@ -8,8 +8,14 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class ProductService {
+
+    private ProductRepository productRepository;
+
+    public ProductService(ProductRepository productRepository){
+        this.productRepository = productRepository;
+    }
+
     public void productInformation() throws SQLException {
-        ProductRepository productRepository = new ProductRepository();
         boolean inputIsCorrect = false;
         while (!inputIsCorrect){
             try{
@@ -66,8 +72,7 @@ public class ProductService {
         }
         return  name;
     }
-    private static String productCategories() throws SQLException {
-        ProductRepository productRepository = new ProductRepository();
+    private String productCategories() throws SQLException {
         productRepository.productCategory();
         boolean inputMatch = false;
         String category = null;
@@ -183,7 +188,6 @@ public class ProductService {
         return  number;
     }
     public void deleteProduct () throws SQLException {
-        ProductRepository productRepository = new ProductRepository();
         boolean productDeleted = false;
         while(!productDeleted){
             try{
@@ -244,7 +248,6 @@ public class ProductService {
         }
     }
     public void increaseInventory() throws SQLException {
-        ProductRepository productRepository = new ProductRepository();
         while(true){
             try{
                 System.out.println("----- product id -----");
@@ -279,7 +282,6 @@ public class ProductService {
         }
     }
     public void decreaseInventroy() throws SQLException {
-        ProductRepository productRepository = new ProductRepository();
         while(true){
             try{
                 System.out.println("----- product id -----");

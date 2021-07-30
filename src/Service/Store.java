@@ -1,16 +1,27 @@
 package Service;
 
+import repository.AdminRepository;
 import repository.CustomerRepository;
 import repository.ProductRepository;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Store {
     public static void main(String[] args) throws SQLException {
-        AdminService adminService = new AdminService();
-        CustomerService  customerService = new CustomerService();
+        Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/store", "root", "Mm1234!@#$");
+        AdminRepository adminRepository = new AdminRepository(connection);
+        CustomerRepository customerRepository = new CustomerRepository(connection);
+        ProductRepository productRepository = new ProductRepository(connection,customerRepository);
+
+        ProductService productService = new ProductService(productRepository);
+        AdminService adminService = new AdminService(adminRepository,customerRepository,productRepository,productService);
+        CustomerService  customerService = new CustomerService(customerRepository,productRepository);
+
+
         boolean exit = false;
         CreateTable createTable = new CreateTable();
         createTable.customerTable();
@@ -52,7 +63,6 @@ public class Store {
                     customerService.signUp();
                     break;
                 case 4:
-                    ProductRepository productRepository = new ProductRepository();
                     productRepository.findProducts();
                     break;
                 case 5:

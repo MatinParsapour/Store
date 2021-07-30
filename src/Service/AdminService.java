@@ -13,8 +13,20 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class AdminService {
+
+    private AdminRepository adminRepository;
+    private CustomerRepository customerRepository;
+    private ProductRepository productRepository;
+    private ProductService productService;
+
+    public AdminService(AdminRepository adminRepository,CustomerRepository customerRepository,ProductRepository productRepository,ProductService productService){
+        this.adminRepository = adminRepository;
+        this.customerRepository = customerRepository;
+        this.productRepository = productRepository;
+        this.productService = productService;
+    }
+
     public void adminLogIn() throws SQLException {
-        AdminRepository adminRepository = new AdminRepository();
         boolean backToMainMenu = false;
         while(!backToMainMenu){
             try{
@@ -62,7 +74,7 @@ public class AdminService {
             }
         }
     }
-    private static void adminMenu() throws SQLException {
+    private void adminMenu() throws SQLException {
         System.out.println("<><><><><> welcome <><><><><>");
         boolean mainMenu = false;
         while(!mainMenu){
@@ -129,9 +141,7 @@ public class AdminService {
             }
         }
     }
-    private static void addProduct() throws SQLException {
-        ProductService productService = new ProductService();
-        ProductRepository productRepository = new ProductRepository();
+    private void addProduct() throws SQLException {
         productRepository.findProducts();
         while(true){
             try{
@@ -154,9 +164,7 @@ public class AdminService {
 
         }
     }
-    private static void deleteProduct() throws SQLException {
-        ProductRepository productRepository = new ProductRepository();
-        ProductService productService = new ProductService();
+    private void deleteProduct() throws SQLException {
         productRepository.findProducts();
         while(true){
             try{
@@ -178,9 +186,7 @@ public class AdminService {
             }
         }
     }
-    private static void increaseInventory() throws SQLException {
-        ProductRepository productRepository = new ProductRepository();
-        ProductService productService = new ProductService();
+    private void increaseInventory() throws SQLException {
         productRepository.findProducts();
         while(true){
             try{
@@ -202,9 +208,7 @@ public class AdminService {
             }
         }
     }
-    private static void decreaseInvenroy() throws SQLException {
-        ProductRepository productRepository = new ProductRepository();
-        ProductService productService = new ProductService();
+    private void decreaseInvenroy() throws SQLException {
         productRepository.findProducts();
         while(true){
             try{
@@ -226,8 +230,7 @@ public class AdminService {
             }
         }
     }
-    private static void verifyPerson() throws SQLException {
-        CustomerRepository customerRepository = new CustomerRepository();
+    private void verifyPerson() throws SQLException {
         customerRepository.findUnverifiedPeople();
         while(true){
             try{
@@ -266,8 +269,7 @@ public class AdminService {
             }
         }
     }
-    private static void suspendPerson() throws SQLException {
-        CustomerRepository customerRepository = new CustomerRepository();
+    private void suspendPerson() throws SQLException {
         customerRepository.findVerifiedPeople();
         while(true){
             try{
@@ -306,8 +308,7 @@ public class AdminService {
             }
         }
     }
-    private static void unSuspendPerson() throws SQLException {
-        CustomerRepository customerRepository = new CustomerRepository();
+    private void unSuspendPerson() throws SQLException {
         customerRepository.findSuspendedPeople();
         while(true){
             try{
@@ -346,8 +347,7 @@ public class AdminService {
             }
         }
     }
-    private static void changePassword() throws SQLException {
-        AdminRepository adminRepository = new AdminRepository();
+    private void changePassword() throws SQLException {
         adminRepository.findAdminPassword();
         boolean inputMatch = false;
         int choice = 0;
@@ -374,7 +374,7 @@ public class AdminService {
             System.out.println("you password didn't change");
         }
     }
-    private static String password(){
+    private String password(){
         Scanner input = new Scanner(System.in);
         String validPassword = "[0-9]{10}";
         Pattern pattern = Pattern.compile(validPassword);
@@ -389,9 +389,7 @@ public class AdminService {
         }
         return password;
     }
-    private static void changeUsername() throws SQLException {
-        CustomerRepository customerRepository = new CustomerRepository();
-        AdminRepository adminRepository = new AdminRepository();
+    private void changeUsername() throws SQLException {
         adminRepository.findAdminUsername();
         boolean inputMatch = false;
         int choice = 0;

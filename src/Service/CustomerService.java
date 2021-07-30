@@ -11,9 +11,16 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class CustomerService {
+
+    private CustomerRepository customerRepository;
+    private ProductRepository productRepository;
+
+    public CustomerService(CustomerRepository customerRepository, ProductRepository productRepository){
+        this.customerRepository = customerRepository;
+        this.productRepository = productRepository;
+    }
     static Scanner input = new Scanner(System.in);
     public void logIn() throws SQLException {
-        CustomerRepository customerRepository = new CustomerRepository();
         boolean itDoesntMatch = true;
         boolean backToMainMenu = false;
         System.out.println("<><><><><><> log in <><><><><><>");
@@ -137,16 +144,14 @@ public class CustomerService {
         }
     }
     public void signUp() throws SQLException {
-        CustomerService customerService = new CustomerService();
-        CustomerRepository customerRepository = new CustomerRepository();
         System.out.println("<><><><><><> sign up <><><><><><>");
-        Customer.setName(CustomerService.name());
-        Customer.setUsername(CustomerService.username());
-        Customer.setPassword(CustomerService.password());
+        Customer.setName(name());
+        Customer.setUsername(username());
+        Customer.setPassword(password());
         customerRepository.insertCustomer();
-        customerService.logIn();
+        logIn();
     }
-    private static String name(){
+    private String name(){
         String name = null;
         boolean itMatches = false;
         System.out.println("------ your name ------");
@@ -161,8 +166,7 @@ public class CustomerService {
         }
         return name;
     }
-    private static String username() throws SQLException {
-        CustomerRepository customerRepository = new CustomerRepository();
+    private String username() throws SQLException {
         String username = null;
         boolean itMatches = false;
         System.out.println("------ username ------");
@@ -184,7 +188,7 @@ public class CustomerService {
         }
         return username;
     }
-    private static String password(){
+    private String password(){
         String validPassword = "[0-9]{10}";
         Pattern pattern = Pattern.compile(validPassword);
         System.out.println("------ password ------");
@@ -198,8 +202,7 @@ public class CustomerService {
         }
         return password;
     }
-    private static void chargeAccount() throws SQLException {
-        CustomerRepository customerRepository = new CustomerRepository();
+    private void chargeAccount() throws SQLException {
         int userId = customerRepository.findUserId();
         System.out.println("----- charge account -----");
         System.out.println("--------- amount ---------");
@@ -208,9 +211,7 @@ public class CustomerService {
         int nextBalance = amount + currentBalance;
         customerRepository.updateUserBalance(nextBalance,userId);
     }
-    private static boolean seeYourCart() throws SQLException {
-        ProductRepository productRepository = new ProductRepository();
-        CustomerRepository customerRepository = new CustomerRepository();
+    private boolean seeYourCart() throws SQLException {
         int userId = customerRepository.findUserId();
         boolean customerHasShoppped = customerRepository.checkCustomerCart(userId);
         if(customerHasShoppped){
@@ -222,12 +223,12 @@ public class CustomerService {
         }
         return customerHasShoppped;
     }
-    private static void addToCart() throws SQLException {
+    private void addToCart() throws SQLException {
         boolean backToMainMenu = false;
-        ProductRepository productRepository = new ProductRepository();
         productRepository.findProducts();
+        int userId = customerRepository.findUserId();
         while(!backToMainMenu){
-            int numberOfProducts = productRepository.checkNumberOfProducts();
+            int numberOfProducts = productRepository.checkNumberOfProducts(userId);
             if(numberOfProducts >= 5){
                 int cartFullChoice = 0;
                 System.out.println("----- you can't buy product more than 5 -----");
@@ -284,9 +285,7 @@ public class CustomerService {
             }
         }
     }
-    private static void deleteFromCart() throws SQLException {
-        ProductRepository productRepository = new ProductRepository();
-        CustomerRepository customerRepository = new CustomerRepository();
+    private void deleteFromCart() throws SQLException {
         int userId = customerRepository.findUserId();
         boolean customerHasShoppped = customerRepository.checkCustomerCart(userId);
         if(customerHasShoppped){
@@ -336,8 +335,7 @@ public class CustomerService {
             System.out.println("you haven't add anything to your cart");
         }
     }
-    private static void changePassword() throws SQLException {
-        CustomerRepository customerRepository = new CustomerRepository();
+    private void changePassword() throws SQLException {
         customerRepository.findPassword();
         boolean inputMatch = false;
         int choice = 0;
@@ -365,8 +363,7 @@ public class CustomerService {
             System.out.println("you password didn't change");
         }
     }
-    private static void changeUsername() throws SQLException {
-        CustomerRepository customerRepository = new CustomerRepository();
+    private void changeUsername() throws SQLException {
         System.out.println("your username is : " + Customer.getUsername());
         boolean inputMatch = false;
         int choice = 0;
@@ -404,14 +401,11 @@ public class CustomerService {
             System.out.println("you username didn't change");
         }
     }
-    private static void viewProducts() throws SQLException {
-        ProductRepository productRepository = new ProductRepository();
+    private void viewProducts() throws SQLException {
         System.out.println("------ view products ------");
         productRepository.findProducts();
     }
-    private static void finalPurchase() throws SQLException {
-        CustomerRepository customerRepository = new CustomerRepository();
-        ProductRepository productRepository = new ProductRepository();
+    private void finalPurchase() throws SQLException {
         int userId = customerRepository.findUserId();
         boolean customerHasShoppped = customerRepository.checkCustomerCart(userId);
         if(customerHasShoppped){
