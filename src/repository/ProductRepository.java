@@ -1,6 +1,6 @@
 package repository;
 
-import entity.Goods;
+import entity.impl.Goods;
 
 import java.sql.*;
 
@@ -130,13 +130,13 @@ public class ProductRepository {
         }
         return cost;
     }
-    public void insertToGoods() throws SQLException {
+    public void insertToGoods(Goods goods) throws SQLException {
         PreparedStatement insertToGoods = connection.prepareStatement("INSERT INTO goods(name,category,subcategory,cost,number)VALUES(?,?,?,?,?)");
-        insertToGoods.setString(1,Goods.getName());
-        insertToGoods.setString(2,Goods.getCategory());
-        insertToGoods.setString(3,Goods.getSubcategory());
-        insertToGoods.setInt(4,Goods.getCost());
-        insertToGoods.setInt(5,Goods.getNumber());
+        insertToGoods.setString(1,goods.getName());
+        insertToGoods.setString(2,goods.getCategory());
+        insertToGoods.setString(3,goods.getSubcategory());
+        insertToGoods.setInt(4,goods.getCost());
+        insertToGoods.setInt(5,goods.getNumber());
         insertToGoods.executeUpdate();
         System.out.println("the product successfully added to inventory");
     }

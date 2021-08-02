@@ -1,6 +1,8 @@
-package entity;
+package entity.impl;
 
-public class Goods {
+import entity.BaseEntity;
+
+public class Goods implements BaseEntity<String> {
     private static int goodsId;
     private static String name;
     private static String category;
@@ -8,13 +10,6 @@ public class Goods {
     private static int cost;
     private static int number;
 
-    public static String getName() {
-        return name;
-    }
-
-    public static void setName(String name) {
-        Goods.name = name;
-    }
 
     public static String getCategory() {
         return category;
@@ -54,5 +49,15 @@ public class Goods {
 
     public static void setGoodsId(int goodsId) {
         Goods.goodsId = goodsId;
+    }
+
+    @Override
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public void setName(String name) {
+        this.name = name;
     }
 }

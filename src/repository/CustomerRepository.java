@@ -1,6 +1,6 @@
 package repository;
 
-import entity.Customer;
+import entity.impl.Customer;
 
 import java.sql.*;
 
@@ -30,10 +30,10 @@ public class CustomerRepository {
         }
         return  exists;
     }
-    public void insertCustomer() throws SQLException {
+    public void insertCustomer(Customer customer) throws SQLException {
         PreparedStatement insertCustomer = connection.prepareStatement("INSERT INTO customer (name,username,password) VALUES (?,?,?)");
-        insertCustomer.setString(1, Customer.getName());
-        insertCustomer.setString(2,Customer.getUsername());
+        insertCustomer.setString(1, customer.getName());
+        insertCustomer.setString(2,customer.getUsername());
         insertCustomer.setInt(3, Integer.parseInt(Customer.getPassword()));
         insertCustomer.executeUpdate();
         System.out.println("you successfully signed up");

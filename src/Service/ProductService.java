@@ -1,6 +1,6 @@
 package Service;
 
-import entity.Goods;
+import entity.impl.Goods;
 import repository.ProductRepository;
 
 import java.sql.SQLException;
@@ -17,6 +17,7 @@ public class ProductService {
 
     public void productInformation() throws SQLException {
         boolean inputIsCorrect = false;
+        Goods goods = new Goods();
         while (!inputIsCorrect){
             try{
                 String productName = productName();
@@ -34,12 +35,12 @@ public class ProductService {
                         System.out.print("try again: ");
                     }
                 }
-                Goods.setName(productName);
-                Goods.setCategory(category);
-                Goods.setSubcategory(subcategory);
-                Goods.setCost(cost);
-                Goods.setNumber(number);
-                productRepository.insertToGoods();
+                goods.setName(productName);
+                goods.setCategory(category);
+                goods.setSubcategory(subcategory);
+                goods.setCost(cost);
+                goods.setNumber(number);
+                productRepository.insertToGoods(goods);
                 inputIsCorrect = true;
             }catch (InputMismatchException exception){
                 System.out.println("you should enter character");

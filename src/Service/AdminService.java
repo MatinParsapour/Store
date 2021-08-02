@@ -1,7 +1,6 @@
 package Service;
 
-import entity.Admin;
-import entity.Customer;
+import entity.impl.Admin;
 import repository.AdminRepository;
 import repository.CustomerRepository;
 import repository.ProductRepository;
@@ -30,6 +29,7 @@ public class AdminService {
         boolean backToMainMenu = false;
         while(!backToMainMenu){
             try{
+                Admin admin = new Admin();
                 System.out.println("------ log in admin ------");
                 System.out.println("-------- username --------");
                 String username = new Scanner(System.in).next();
@@ -37,7 +37,7 @@ public class AdminService {
                 String password = new Scanner(System.in).next();
                 boolean heIsAdmin = adminRepository.checkAdmin(username,password);
                 if(heIsAdmin){
-                    Admin.setUsername(username);
+                    admin.setName(username);
                     adminMenu();
                     break;
                 }

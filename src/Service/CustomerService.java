@@ -1,6 +1,6 @@
 package Service;
 
-import entity.Customer;
+import entity.impl.Customer;
 import repository.CustomerRepository;
 import repository.ProductRepository;
 
@@ -145,10 +145,11 @@ public class CustomerService {
     }
     public void signUp() throws SQLException {
         System.out.println("<><><><><><> sign up <><><><><><>");
-        Customer.setName(name());
-        Customer.setUsername(username());
-        Customer.setPassword(password());
-        customerRepository.insertCustomer();
+        Customer customer = new Customer();
+        customer.setName(name());
+        customer.setUsername(username());
+        customer.setPassword(password());
+        customerRepository.insertCustomer(customer);
         logIn();
     }
     private String name(){

@@ -1,18 +1,13 @@
-package entity;
+package entity.impl;
 
-public class Customer {
+import entity.BaseEntity;
+
+public class Customer implements BaseEntity<String> {
     private static String name;
     private static String username;
     private static String password;
     private static int balance;
 
-    public static String getName() {
-        return name;
-    }
-
-    public static void setName(String name) {
-        Customer.name = name;
-    }
 
     public static String getUsername() {
         return username;
@@ -36,5 +31,15 @@ public class Customer {
 
     public static void setBalance(int balance) {
         Customer.balance = balance;
+    }
+
+    @Override
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public void setName(String name) {
+        this.name = name;
     }
 }
