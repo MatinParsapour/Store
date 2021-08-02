@@ -1,5 +1,8 @@
 package Service;
 
+import Service.impl.AdminService;
+import Service.impl.CustomerService;
+import Service.impl.ProductService;
 import repository.AdminRepository;
 import repository.CustomerRepository;
 import repository.ProductRepository;
@@ -19,7 +22,7 @@ public class Store {
 
         ProductService productService = new ProductService(productRepository);
         AdminService adminService = new AdminService(adminRepository,customerRepository,productRepository,productService);
-        CustomerService  customerService = new CustomerService(customerRepository,productRepository);
+        CustomerService customerService = new CustomerService(customerRepository,productRepository);
 
 
         boolean exit = false;

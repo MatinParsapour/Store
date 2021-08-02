@@ -1,5 +1,6 @@
-package Service;
+package Service.impl;
 
+import Service.BaseService;
 import entity.impl.Customer;
 import repository.CustomerRepository;
 import repository.ProductRepository;
@@ -10,7 +11,7 @@ import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class CustomerService {
+public class CustomerService implements BaseService {
 
     private CustomerRepository customerRepository;
     private ProductRepository productRepository;
@@ -116,7 +117,7 @@ public class CustomerService {
                             addToCart();
                             break;
                         case 4:
-                            deleteFromCart();
+                            deleteOfProduct();
                             break;
                         case 5:
                             changePassword();
@@ -250,7 +251,7 @@ public class CustomerService {
                     }
                 }
                 if (cartFullChoice != 1) {
-                    deleteFromCart();
+                    deleteOfProduct();
                 }
                 break;
             }
@@ -284,56 +285,6 @@ public class CustomerService {
                     System.out.print("try again: ");
                 }
             }
-        }
-    }
-    private void deleteFromCart() throws SQLException {
-        int userId = customerRepository.findUserId();
-        boolean customerHasShoppped = customerRepository.checkCustomerCart(userId);
-        if(customerHasShoppped){
-            boolean backToMainMenu = false;
-            while(!backToMainMenu){
-                customerHasShoppped = customerRepository.checkCustomerCart(userId);
-                if(!customerHasShoppped){
-                    break;
-                }
-                productRepository.findProductId(userId);
-                boolean inputMatch = false;
-                int choice = 0;
-                System.out.println("   1.delete from cart   ");
-                System.out.println("   2.back to main menu  ");
-                System.out.print(":");
-                while(!inputMatch){
-                    try{
-                        choice = new Scanner(System.in).nextInt();
-                        while(choice < 1 || choice > 2){
-                            System.out.println("----- invalid choice -----");
-                            System.out.println("try again: ");
-                            choice = new Scanner(System.in).nextInt();
-                        }
-                        inputMatch = true;
-                    }catch (InputMismatchException exception){
-                        System.out.println("you should enter a number");
-                        System.out.print("try again: ");
-                    }
-                }
-                if(choice == 1){
-                    System.out.println("----- product id -----");
-                    int productId = input.nextInt();
-                    boolean idIsCorrect = productRepository.checkProductId(productId);
-                    while(!idIsCorrect){
-                        System.out.println("----------- invalid id -----------");
-                        System.out.println("this id isn't one of your products");
-                        System.out.print("try again: ");
-                        productId = input.nextInt();
-                        idIsCorrect = productRepository.checkProductId(productId);
-                    }
-                    productRepository.deleteProduct(productId);
-                }else{
-                    break;
-                }
-            }
-        }else{
-            System.out.println("you haven't add anything to your cart");
         }
     }
     private void changePassword() throws SQLException {
@@ -465,7 +416,7 @@ public class CustomerService {
                                 chargeAccount();
                                 break;
                             case 2:
-                                deleteFromCart();
+                                deleteOfProduct();
                                 break;
                             case 3:
                                 break;
@@ -474,6 +425,58 @@ public class CustomerService {
                 }
                 else{
                     System.out.println("you haven't add anything to your cart");
+                }
+            }
+        }else{
+            System.out.println("you haven't add anything to your cart");
+        }
+    }
+
+    @Override
+    public void deleteOfProduct() throws SQLException {
+        int userId = customerRepository.findUserId();
+        boolean customerHasShoppped = customerRepository.checkCustomerCart(userId);
+        if(customerHasShoppped){
+            boolean backToMainMenu = false;
+            while(!backToMainMenu){
+                customerHasShoppped = customerRepository.checkCustomerCart(userId);
+                if(!customerHasShoppped){
+                    break;
+                }
+                productRepository.findProductId(userId);
+                boolean inputMatch = false;
+                int choice = 0;
+                System.out.println("   1.delete from cart   ");
+                System.out.println("   2.back to main menu  ");
+                System.out.print(":");
+                while(!inputMatch){
+                    try{
+                        choice = new Scanner(System.in).nextInt();
+                        while(choice < 1 || choice > 2){
+                            System.out.println("----- invalid choice -----");
+                            System.out.println("try again: ");
+                            choice = new Scanner(System.in).nextInt();
+                        }
+                        inputMatch = true;
+                    }catch (InputMismatchException exception){
+                        System.out.println("you should enter a number");
+                        System.out.print("try again: ");
+                    }
+                }
+                if(choice == 1){
+                    System.out.println("----- product id -----");
+                    int productId = input.nextInt();
+                    boolean idIsCorrect = productRepository.checkProductId(productId);
+                    while(!idIsCorrect){
+                        System.out.println("----------- invalid id -----------");
+                        System.out.println("this id isn't one of your products");
+                        System.out.print("try again: ");
+                        productId = input.nextInt();
+                        idIsCorrect = productRepository.checkProductId(productId);
+                    }
+                    productRepository.deleteProduct(productId);
+                }else{
+                    break;
                 }
             }
         }else{

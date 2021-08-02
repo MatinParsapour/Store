@@ -1,5 +1,6 @@
-package Service;
+package Service.impl;
 
+import Service.BaseService;
 import entity.impl.Admin;
 import repository.AdminRepository;
 import repository.CustomerRepository;
@@ -11,7 +12,7 @@ import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class AdminService {
+public class AdminService implements BaseService {
 
     private AdminRepository adminRepository;
     private CustomerRepository customerRepository;
@@ -112,7 +113,7 @@ public class AdminService {
                     addProduct();
                     break;
                 case 2:
-                    deleteProduct();
+                    deleteOfProduct();
                     break;
                 case 3:
                     increaseInventory();
@@ -162,28 +163,6 @@ public class AdminService {
                 System.out.print("try again: ");
             }
 
-        }
-    }
-    private void deleteProduct() throws SQLException {
-        productRepository.findProducts();
-        while(true){
-            try{
-                System.out.println("do you want to delete a product? 1.yes   2.no");
-                int deleteProduct = new Scanner(System.in).nextInt();
-                while(deleteProduct < 1 || deleteProduct > 2){
-                    System.out.println("you should choose between menu options");
-                    System.out.print("try again : ");
-                    deleteProduct = new Scanner(System.in).nextInt();
-                }
-                if(deleteProduct == 1){
-                    productService.deleteProduct();
-                }else{
-                    break;
-                }
-            }catch (InputMismatchException exception){
-                System.out.println("you should enter a number");
-                System.out.print("try again: ");
-            }
         }
     }
     private void increaseInventory() throws SQLException {
@@ -423,6 +402,30 @@ public class AdminService {
             adminRepository.changeAdminUsername(username);
         }else{
             System.out.println("you username didn't change");
+        }
+    }
+
+    @Override
+    public void deleteOfProduct() throws SQLException {
+        productRepository.findProducts();
+        while(true){
+            try{
+                System.out.println("do you want to delete a product? 1.yes   2.no");
+                int deleteProduct = new Scanner(System.in).nextInt();
+                while(deleteProduct < 1 || deleteProduct > 2){
+                    System.out.println("you should choose between menu options");
+                    System.out.print("try again : ");
+                    deleteProduct = new Scanner(System.in).nextInt();
+                }
+                if(deleteProduct == 1){
+                    productService.deleteOfProduct();
+                }else{
+                    break;
+                }
+            }catch (InputMismatchException exception){
+                System.out.println("you should enter a number");
+                System.out.print("try again: ");
+            }
         }
     }
 }
