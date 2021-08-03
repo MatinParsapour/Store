@@ -30,15 +30,15 @@ public class Store {
         createTable.customerTable();
         createTable.goodsTable();
         createTable.customerBuyGoods();
-        System.out.println("------ welcome to store ------");
+        System.out.println("+----- welcome to store -----+");
         while(!exit){
             boolean inputIsCorrect = false;
-            System.out.println("           1.Admin            ");
-            System.out.println("           2.Log in           ");
-            System.out.println("           3.Sign up          ");
-            System.out.println("           4.View goods       ");
-            System.out.println("           5.Exit             ");
-            System.out.println("------------------------------");
+            System.out.println("|          1.Admin           |");
+            System.out.println("|          2.Log in          |");
+            System.out.println("|          3.Sign up         |");
+            System.out.println("|          4.View goods      |");
+            System.out.println("|          5.Exit            |");
+            System.out.println("+----------------------------+");
             System.out.print("choose : ");
             int choice = 0;
             while(!inputIsCorrect){
